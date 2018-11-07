@@ -2,6 +2,7 @@
 package com.payudon.music.service;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,5 +58,12 @@ public class MusicService {
     	}
 	    in.close();
 		return sb;
+	}
+	public InputStream getMusicStream(String urlStr) throws Exception{
+		URL url = new URL(urlStr);
+		//初始化一个链接到那个url的连接
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();// 打开连接  
+		connection.connect();// 连接会话 
+		return connection.getInputStream();
 	}
 }

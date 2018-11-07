@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/css/muisc/index_phone.css">
+<script type="text/javascript" src="/core/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/core/toucher.js"></script>
+<script type="text/javascript" src="/js/music/interface.js"></script>
+<script type="text/javascript" src="/js/music/app/index_phone.js"></script>
+<title>手机端主页</title>
+</head>
+<body>
+	<div id="nav" style="height:57px">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+						aria-expanded="false" style="float:left">
+						<span class="sr-only"></span> 
+						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span> 
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">推荐</a> 
+					<a class="navbar-brand" href="#">排行榜</a> 
+					<a class="navbar-brand" href="#">我的</a>
+					<button type="button" class="navbar-toggle collapsed"
+						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
+						aria-expanded="false">
+						<span class="sr-only"></span> 
+						<span class="glyphicon glyphicon-search"></span>
+					</button>	
+				</div>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-2">
+					<ul class="nav navbar-nav">
+						<li>
+							<div class="input-group">
+								<span class="input-group-btn">
+								<button class="btn btn-default" type="button" style="color:#67558e">搜索</button>	
+								</span> 
+								<input type="text" class="form-control" placeholder="Search for...">
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="collapse navbar-collapse"
+					id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+
+						<li class="active">
+							<a href="#">Link <span class="sr-only">(current)</span></a>
+						</li>
+						<li>
+							<a href="#">Link</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+	<div id="slide-image" class="div_main">
+		<div id="carousel-example-generic" class="carousel slide both"
+			data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#carousel-example-generic" data-slide-to="0"class="active"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+				<li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			</ol>
+			<!-- Wrapper for slides -->
+			<div class="carousel-inner" role="listbox">
+				<div class="item active">
+					<img src="/images/app/天使2560x1440.jpg" alt="...">
+					<div class="carousel-caption">...</div>
+				</div>
+				<div class="item">
+					<img src="/images/app/D.VA2560x1440.jpg" alt="...">
+					<div class="carousel-caption">...</div>
+				</div>
+				<div class="item">
+					<img src="/images/app/雪国仙境2560x1440.jpg" alt="...">
+					<div class="carousel-caption">...</div>
+				</div>
+			</div>
+			<!-- Controls -->
+			<a id="carleft" class="left carousel-control"
+				href="#carousel-example-generic" role="button" data-slide="prev">
+				<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				<span class="sr-only">Previous</span>
+			</a> 
+			<a id="carright" class="right carousel-control"
+				href="#carousel-example-generic" role="button" data-slide="next">
+				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+				<span class="sr-only">Next</span>
+			</a>
+		</div>
+	</div>
+	<div id="music_style" class="div_main">
+		<div class="row">
+		  <div class="col-xs-3 col-md-3">
+		  	<div class="music_style_margin">
+		  		<div style="margin-left: 2.5px">
+		  			<img src="/images/app/popular.svg" class="music_style_img">
+		  		</div>
+		  		<div>
+		  			<span>流行</span>
+		  		</div>
+		  	</div>
+		  </div>
+		  <div class="col-xs-3 col-md-3">
+		  	<div class="music_style_margin">
+		  		<div style="margin-left: 2.5px">
+		  			<img src="/images/app/classical.svg" class="music_style_img">
+		  		</div>
+		  		<div>
+		  			<span>古典</span>
+		  		</div>
+		  	</div>
+		  </div>
+		  <div class="col-xs-3 col-md-3">
+		  	<div class="music_style_margin">
+		  		<div style="margin-left: 7.5px">
+		  			<img src="/images/app/cd.svg" class="music_style_img">
+		  		</div>
+		  		<div>
+		  			<span>纯音乐</span>
+		  		</div>	
+		  	</div>
+		  </div>
+		  <div class="col-xs-3 col-md-3">
+		  	<div class="music_style_margin">
+		  		<div style="margin-left: 2.5px">
+		  			<img src="/images/app/station.svg" class="music_style_img">
+		  		</div>	
+		  		<div>
+		  			<span>电台</span>
+		  		</div>
+		  	</div>
+		  </div>
+		</div>
+	</div>
+	<div id="music_list_table">
+		<div>
+			<table class="table">
+			 	<tr class="songs" th:each="songs,songStat:${songlist}">
+			 		<td width="20px;">
+			 			<input type="hidden" clas="songmid" th:value="${songs.data.songmid}">
+			 			<input type="hidden" clas="albummid" th:value="${songs.data.albummid}">
+			 		</td>
+			 		<td style="height:57px">
+			 			<div class="list_music_name">
+			 				<span style="color:#b9b7c6;font-weight:700;
+			 				font-family:cursive" th:text="${songs.data.songname}"></span>
+			 			</div>
+			 			<div class="list_music_info" >
+			 				<a th:text="${songs.data.singer[0].name}" th:attr="mid=${songs.data.singer[0].mid}"></a>
+			 			</div>
+			 		</td>
+			 		<td width="80px">
+			 			
+			 		</td>
+			 		<td width="50px" >
+			 			<div  class="more" style="float: right;padding-top: 15px;">
+			 				<span class="glyphicon glyphicon-option-horizontal"></span>
+			 			</div>
+			 		</td>
+			 	</tr>
+			</table>
+		</div>
+	</div>
+	<div id="player" style="width:100%;height:60px;background-color:#fe0041;
+	position:fixed;bottom:0">
+		<audio id="audio"></audio>
+		<div>
+			
+		</div>
+	</div>
+	<div class="row" id="helper" style="display:none;position:absolute;width:90px">
+		<div class="col-xs-4 col-md-4">
+			<img alt="collect" src="/images/app/favorite.svg" class="helper_icon">
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<img alt="share" src="/images/app/share.svg" class="helper_icon" style="border: 1px solid;">
+		</div>
+		<div class="col-xs-4 col-md-4">
+			<img alt="add" src="/images/app/add.svg" class="helper_icon">
+		</div>
+	</div>
+</body>
+</html>

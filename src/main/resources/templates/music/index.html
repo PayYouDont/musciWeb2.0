@@ -1,181 +1,34 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/css/muisc/index.css">
 <script type="text/javascript" src="/core/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/core/jquery-ui.js"></script>
-<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/music/scroll.js"></script>
-<script type="text/javascript" src="/js/music/interface.js"></script>
-<script type="text/javascript" src="/js/music/index.js"></script>
+<head>
 <title>主页</title>
+<script type="text/javascript">
+function isPC() {
+    var userAgentInfo = navigator.userAgent;
+    var Agents = ["Android", "iPhone",
+                "SymbianOS", "Windows Phone"];
+    var flag = true;
+    for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+        }
+    }
+    return flag;
+}
+ 
+var flag = isPC(); //true为PC端，false为手机端
+$(function(){
+	if(flag){
+		$("#app").load("../music/index_pc");
+	}else{
+		$("#app").load("../music/index_phone");
+	}
+})
+</script>
 </head>
 <body>
-	<nav class="navbar navbar-default">
-		 <div class="container-fluid">
-		    <!-- Brand and toggle get grouped for better mobile display -->
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a class="navbar-brand" href="#"></a>
-		    </div>
-			<div class="collapse navbar-collapse row" id="bs-example-navbar-collapse-1">
-				 <div class="col-md-2"></div>
-				 <div class="navbar-form navbar-left search col-xs-12 col-sm-12 col-md-4" role="search">
-				  	<div class="input-group">
-				      <span class="input-group-btn">
-				        <button class="btn btn-default searchBtn" type="button" onclick="searchMusic();">搜索</button>
-				      </span>
-				      <input type="text" class="form-control searchTxt" placeholder="歌名或歌手名">
-				    </div>
-				</div>
-				<button type="button" id="login-btn" class="btn btn-default navbar-btn navbar-right" onclick="Login()">登录</button>
-				<div class="dropdown navbar-right" id="dropdown">
-					您好:
-				  <button class="btn btn-default navbar-btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    <span id="nick" th:text="${user.nick}"></span>
-				    <span class="caret"></span>
-				  </button>
-				  <ul class="dropdown-menu user-menu" aria-labelledby="dropdownMenu1">
-				    <li><a href="#">个人中心</a></li>
-				    <li><a href="#">我的歌单</a></li>
-				    <li><a href="#">我喜欢的</a></li>
-				    <li role="separator" class="divider"></li>
-				    <li><a onclick="toLogout()">注销</a></li>
-				  </ul>
-				</div>
-			</div>
-		</div>
-	</nav>
-<div class="row">
-	<div class="left col-md-2 border">
-		<ul class="menuUL">
-			<li class="menuLi cur"><a href="#"> <i class="icon iplay"></i>
-					正在播放
-			</a></li>
-			<li class="menuLi"><a href="#"> <i class="icon ihst"></i>
-					播放历史
-			</a></li>
-			<li class="menuLi"><a href="#"> <i class="icon ishouc"></i>
-					我收藏的单曲
-			</a></li>
-		</ul>
-		<div class="collectOut">
-			<span class="colS">我创建的精选集</span> <a href="#" class="colA"></a>
-		</div>
-		<div class="cellectList"></div>
-		<audio id="audio" src=""></audio>
-	</div>
-	<div class="center col-md-8 border">
-		<div class="playHd">
-			<div class="phInner">
-				<div class="col" id="songCount">歌曲(50)</div>
-				<div class="col">演唱者</div>
-				<div class="col">专辑</div>
-			</div>
-			<div class="playBd">
-				<div class="scrollView">
-					<ul class="songUL">
-						<li class="songList">
-							<div class="songLMain" th:each="list,listStat:${songlist}">
-								<div class="check">
-									<input class="checkIn" type="checkbox">
-								</div>
-								<div class="start">
-									<em th:attr="sonN=${list.data.songmid}" th:text="${list.cur_count}"></em>
-								</div>
-								<div class="songBd">
-									<div class="col colsn" th:text="${list.data.songname}">song.songName</div>
-									<div class="col colcn" th:text="${list.data.singer[0].name}">song.singer</div>
-									<div class="col" th:text="${list.data.albumname}">song.albumName</div>
-								</div>
-								<div class="helper" th:attr="data-cur=${list.cur_count}">
-									<a th:attr="data-songmid=${list.data.songmid},data-songname=${list.data.songname}" class="cicon download" title="下载" onclick="downShow(this);"></a>
-									<a class="cicon love" title="收藏"></a>
-									<a class="cicon more" title="更多"></a>
-									<a class="cicon dele" title="删除"></a>
-								</div>
-							</div>
-							
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="playFt">
-				<div class="track">
-					<div class="uiCheck">
-						<input class="checkAll" type="checkbox" select="0">
-					</div>
-					<div class="uiItem">
-						<a href="#" class="itIcon itDele">删除</a>
-					</div>
-					<div class="uiItem">
-						<a href="#" class="itIcon itShou">收藏</a>
-					</div>
-					<div class="uiItem">
-						<a href="#" class="itIcon itJin">添加到精选集</a>
-					</div>
-					<div class="uiItem">
-						<a href="#" class="itIcon itMore">更多</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="right col-md-2"></div>
-</div>
-<div class="bottom">
-	<div class="playerWrap">
-		<div class="playerCon">
-			<a class="pbtn prevBtn" onclick="playPrev()"></a>
-			<a class="pbtn playBtn" isplay="0"></a> 
-			<a class="pbtn nextBtn" onclick="playNext()"></a> 
-			<a class="mode" data-circle="0" onclick="circle(this)"></a>
-		</div>
-		<div class="playInfo">
-			<div class="trackInfo">
-				<a class="songName"></a> - 
-				<a class="songPlayer"></a>
-				<div class="trackCon">
-					<a class="tc1"></a> 
-					<a class="tc2"></a> 
-					<a class="tc3"></a>
-				</div>
-			</div>
-			<div class="playerLength">
-				<div class="position">00:00</div>
-				<div class="progress">
-					<div class="pro1"></div>
-					<div class="pro2">
-						<a href="#" class="dian"></a>
-					</div>
-				</div>
-				<div class="duration">03:35</div>
-			</div>
-		</div>
-		<div class="vol">
-			<a href="#" class="pinBtn" onclick="playHighQuality();"></a>
-			<div class="volm">
-				<div class="volSpeaker"></div>
-				<div class="volControl">
-					<a href="#" class="dian2"></a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<ul class="dropdown-menu" id="down-menu" style="position:absolute;min-width:0px;">
-    <li><a onclick="toDownLoad(this)">普通下载</a></li>
-    <li><a onclick="toDownLoad(this)">高品质下载</a></li>
-</ul>
+	<div id="app" style="height: 100%;"></div>
 </body>
 </html>

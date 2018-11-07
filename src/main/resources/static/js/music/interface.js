@@ -76,10 +76,14 @@ function FormatDate(fmt,date)
  */
 function hideElement(target, close) {
 	$(document).bind('click', function(e) {
-		var e = e || window.event; //浏览器兼容性 
+		var e = e || window.event; // 浏览器兼容性
 		var elem = e.target || e.srcElement;
-		while (elem) { //循环判断至跟节点，防止点击的是div子元素 
-			if ((elem.className || elem.id) && (elem.id == close || elem.id == target || elem == target || elem.className.indexOf(target) != -1)) {
+		while (elem) { // 循环判断至跟节点，防止点击的是div子元素
+			if ((elem.className || elem.id) && 
+					(elem.id == close || 
+					elem.id == target || 
+					elem == target || 
+					elem.className.indexOf(target) != -1)) {
 				return;
 			}
 			elem = elem.parentNode;

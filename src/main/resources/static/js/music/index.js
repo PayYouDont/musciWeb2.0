@@ -1,48 +1,19 @@
-var music = {
-	//是否高品质播放（0:普通、1:高品质）
-	HIGHQUALITY:0
-};
+
 $(function() {
 	start();
+	initPage();
 	/* 自定义滚动条 */
 	$(".songUL").rollbar({
 		zIndex : 80
 	});
-	// $("#lyr").rollbar({zIndex:80});
-	/* 复选框 */
-	$(".checkIn").click(function() {
-		var s = $(this).attr("select");
-		if (s == 0) {
-			$(this).css("background-position", "-37px -710px");
-			$(this).attr("select", "1");
+	$(".checkAll").click(function() {
+		var checked = $(this).prop("checked");
+		if(checked){
+			$(".check input[type='checkbox']").attr("checked",true);
+		}else{
+			$(".check input[type='checkbox']").attr("checked",false);
 		}
-		;
-		if (s == 1) {
-			$(this).css("background-position", "");
-			$(this).attr("select", "0");
-		}
-		;
 	});
-	$(".checkAll").click(
-			function() {
-				var s = $(this).attr("select");
-				if (s == 0) {
-					$(this).css("background-position", "-37px -710px");
-					$(".checkIn[select='0']").css("background-position",
-							"-37px -710px");
-					$(".checkIn[select='0']").attr("select", "1");
-					$(this).attr("select", "1");
-				}
-				;
-				if (s == 1) {
-					$(this).css("background-position", "");
-					$(".checkIn[select='1']").css("background-position", "");
-					$(".checkIn[select='1']").attr("select", "0");
-					$(this).attr("select", "0");
-				}
-				;
-
-			});
 	/* 双击播放 */
 	$(".songList").dblclick(function() {
 		var sid = $(this).find(".start em").html();
@@ -73,16 +44,24 @@ $(function() {
 			$(this).css("background-position", "0 -30px");
 			$(this).attr("isplay", "1");
 		}
-		;
 		if (p == 1) {
 			$(this).css("background-position", "");
 			$(this).attr("isplay", "0");
 		}
-		;
-		if (audio.paused)
-			audio.play();
-		else
+		if (audio.paused){
+			var playPromise = audio.play();
+			if (playPromise !== undefined){
+				playPromise.then(function() {
+				    // Automatic playback started!
+				  }).catch(function(error) {
+				    // Automatic playback failed.
+				    // Show a UI element to let the user manually start playback.
+					  console.log(error)
+				  });
+			}
+		}else{
 			audio.pause();
+		}
 
 	});
 
@@ -133,7 +112,7 @@ function start() {
 	$(".start em").click(function() {
 		/* 开始放歌 */
 		var sid = $(this).attr("sonn");
-		var songImg = $(this).data("songimg");
+		var songImg = $(this).attr("songimg");
 		songIndex = sid;
 		play(sid,songImg);
 	});
@@ -152,7 +131,17 @@ function play(sid, songImg) {
 	audio = document.getElementById("audio");
 	/* 显示歌曲总长度 */
 	if (audio.paused) {
-		audio.play();
+		var playPromise = audio.play();
+		if (playPromise !== undefined){
+			playPromise.then(function() {
+			    // Automatic playback started!
+			  }).catch(function(error) {
+			    // Automatic playback failed.
+			    // Show a UI element to let the user manually start playback.
+				  console.log(error)
+				  getMusicStream(playUrl);
+			  });
+		}
 	} else {
 		audio.pause();
 	}
@@ -160,6 +149,7 @@ function play(sid, songImg) {
 	audio.addEventListener('play', audioPlay, false);
 	audio.addEventListener('pause', audioPause, false);
 	audio.addEventListener('ended', audioEnded, false);
+	
 	/* 播放歌词 */
 	//var musicId = songListObj[sid].musicId;
 	//getReady1(musicId);// 准备播放
@@ -224,7 +214,7 @@ function updateProgress(ev) {
 	var llef = Math.floor(lef).toString() + "px";
 	$(".dian").css("left", llef);
 	if (songTime.toString() == curTime.toString()) {
-		circleType[circleIndex].circlePlay();
+		//circleType[circleIndex].circlePlay();
 	}
 }
 function getVkey(songmid){
@@ -246,4 +236,49 @@ function getVkey(songmid){
 		}
 	})
 	return vkey;
+}
+function getMusicStream(source){
+	var url = "/music/getMusicStream?url="+source;
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	    	var urlObject = window.URL || window.webkitURL || window;
+	        audio.src = urlObject.createObjectURL(this.response);
+	        audio.play()
+	    }
+	};
+	xhr.open('POST',url,true);
+	xhr.responseType = 'blob';
+	xhr.send();
+}
+//初始分页
+function initPage(search) {
+	$('#pageLimit').bootstrapPaginator({
+		currentPage : music.page.index,// 当前的请求页面。
+		totalPages : music.page.count(),// 一共多少页。
+		count : "normal",// 页眉的大小。
+		bootstrapMajorVersion : 3,// bootstrap的版本要求。
+		alignment : "right",
+		numberOfPages : 5,//每页显示页数
+		itemTexts : function(type, page, current) {
+			switch (type) {
+			case "first":
+				return "首页";
+			case "prev":
+				return "上一页";
+			case "next":
+				return "下一页";
+			case "last":
+				return "末页";
+			case "page":
+				return page;
+			}
+		},
+		onPageClicked : function(event, originalEvent, type, page) {
+			var pageIndex = page;
+			var pageSize = music.page.size;
+			window.location.href = "/music/toIndex?pageIndex="+pageIndex;
+			start();
+		}
+	});
 }
