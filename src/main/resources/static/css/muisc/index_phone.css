@@ -139,12 +139,11 @@ span, #nav .navbar-default .navbar-brand {
 	width: 100%;
 }
 #lyr_core{
-	background-color: #dbd5b6;
 	height:100%;
 	position: absolute;
 	top:0;
-	background: linear-gradient(15deg,#dbd5b6 60%,#393159 0%);
+	background: linear-gradient(15deg,#393159 60%,#dbd5b6 0%);
 }
 #lyr_core h1{
-	 filter: blur(0px);
+	color:#fbfaf8;
 }
