@@ -138,7 +138,7 @@ function changePlayer(albummid){
 	$("#player_normal").hide();
 	$("#player_super").show();
 	var imgUrl = getCover(albummid);
-	$("#player_super").css({"background-image":"url("+imgUrl+")"});
+	$("#lyr_bg").css({"background-image":"url("+imgUrl+")"});
 	$("#player").css("background-color","#fff");
 }
 function resPlayer(){

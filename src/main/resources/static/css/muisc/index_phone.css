@@ -1,3 +1,6 @@
+*{
+	margin:0px;padding:0px
+}
 body{
 	background-color: #0f093a
 }
@@ -116,9 +119,11 @@ span, #nav .navbar-default .navbar-brand {
 #player_normal{
 	background-color:#fe0041;
 }
-#player_super{
+#player_super,#lyr_bg{
 	height: 100%;
 	width: 100%;
+}
+#lyr_bg{
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	-webkit-filter: blur(5px);
@@ -133,15 +138,13 @@ span, #nav .navbar-default .navbar-brand {
 	opacity: 0.7;
 	width: 100%;
 }
-#lyr_title{
+#lyr_core{
 	background-color: #dbd5b6;
-	height:30%;
+	height:100%;
+	position: absolute;
+	top:0;
+	background: linear-gradient(15deg,#dbd5b6 60%,#393159 0%);
 }
-#lyr_helper{
-	height:15%;
-	background: linear-gradient(to left bottom,#dbd5b6 50%,#393159 50%);
-}
-#lyr_content{
-	height:35%;
-	background-color: #393159;
+#lyr_core h1{
+	 filter: blur(0px);
 }
