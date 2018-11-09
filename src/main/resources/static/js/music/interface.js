@@ -15,6 +15,11 @@ function getMp3Pro(songmid,vkey){
 	return 'http://dl.stream.qqmusic.qq.com/M800'+songmid+'.mp3?vkey='+vkey+'&guid=8604243058&uin=0&fromtag=53'
 }
 
+function getCover(albummid){
+	return 'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+albummid+'.jpg?max_age=2592000';
+
+}
+
 var warning = "本网站仅个人学习、研究使用，请勿用于商业用途。" +
 			  "网站内容均来自互联网，如有侵权请联系删除!!";
 

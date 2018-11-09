@@ -42,7 +42,7 @@ span, #nav .navbar-default .navbar-brand {
 .div_main{
 	position: fixed;
 	width: 100%;
-	z-index:999;
+	z-index:500;
 }
 #slide-image{
 	top:57px;
@@ -64,11 +64,84 @@ span, #nav .navbar-default .navbar-brand {
 	background-color: #2a2151;
 	table-layout:fixed;
 	margin-top: 252px;
-	margin-bottom: 60px;
+	margin-bottom:51px;
+}
+#player{
+	width:100%;
+	height:50px;
+	position:fixed;
+	background-color:#fe0041;
+	bottom:0;
+	z-index: 1500;
 }
 .helper_icon{
 	width:20px;
 	height: 20px;
 	background-color: #b9b7c6;
 	border-radius: 12px 12px;
+}
+#player_icon{
+	width: 40px;
+    height: 40px;
+    margin: auto;
+    line-height: 50px;
+    margin-left: 10px;
+}
+#player_icon img{
+	width: 40px;
+    height: 40px
+}
+#player_info,.list_music_name{
+	overflow: hidden;
+	text-overflow: unset;
+	white-space: nowrap;
+}
+.songname{
+	color:#f9f7f9;
+	font-weight:400;
+	font-size: 16px;
+}
+.singername{
+	font-size:10px;
+	color:#615d71;
+}
+.player_func_icon{
+	line-height:50px;
+	margin-left: 10px;
+}
+.player_func_icon img{
+	width: 25px;
+    height: 25px;
+}
+#player_normal{
+	background-color:#fe0041;
+}
+#player_super{
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	-webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+}
+#player_super div{
+	filter:alpha(Opacity=70);
+	-moz-opacity:0.7;
+	opacity: 0.7;
+	width: 100%;
+}
+#lyr_title{
+	background-color: #dbd5b6;
+	height:30%;
+}
+#lyr_helper{
+	height:15%;
+	background: linear-gradient(to left bottom,#dbd5b6 50%,#393159 50%);
+}
+#lyr_content{
+	height:35%;
+	background-color: #393159;
 }

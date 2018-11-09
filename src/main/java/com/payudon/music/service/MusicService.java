@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.payudon.music.entity.MusicList;
+import com.payudon.util.JsonWrapper;
 import com.payudon.util.UrlUtil;
 
 import lombok.Data;
@@ -65,5 +66,28 @@ public class MusicService {
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();// 打开连接  
 		connection.connect();// 连接会话 
 		return connection.getInputStream();
+	}
+	public StringBuffer search(String urlStr,String encoding) throws Exception{
+		URL url = new URL(urlStr);
+		//初始化一个链接到那个url的连接
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();// 打开连接  
+		//设置User-Agent 
+		connection.setRequestProperty("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
+		connection.setRequestProperty("referer","https://y.qq.com/portal/playlist.html");
+		connection.connect();// 连接会话 
+		InputStream is = connection.getInputStream();
+		BufferedReader in = new BufferedReader( new InputStreamReader(is,encoding));   
+		StringBuffer sb = new StringBuffer(); 
+	    String str = null;
+	    while((str = in.readLine()) != null) {
+    		sb.append(str);
+    	}
+	    in.close();
+		return sb;
+	}
+	public StringBuffer getlyr(String songid) throws Exception {
+		String urlStr = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg?nobase64=1&musicid=" + songid
+				+ "&callback=jsonp1&g_tk=5381&jsonpCallback=jsonp1&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+		return search(urlStr, "UTF-8");
 	}
 }

@@ -13,6 +13,9 @@
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="/core/toucher.js"></script>
 <script type="text/javascript" src="/js/music/interface.js"></script>
+<script th:inline="javascript">
+	var songs = [[${songlist}]];
+</script>
 <script type="text/javascript" src="/js/music/app/index_phone.js"></script>
 <title>手机端主页</title>
 </head>
@@ -151,25 +154,20 @@
 	<div id="music_list_table">
 		<div>
 			<table class="table">
-			 	<tr class="songs" th:each="songs,songStat:${songlist}">
+			 	<tr class="songs" th:each="songs,songStat:${songlist}" th:attr="rowid=${songStat.index}">
 			 		<td width="20px;">
-			 			<input type="hidden" clas="songmid" th:value="${songs.data.songmid}">
-			 			<input type="hidden" clas="albummid" th:value="${songs.data.albummid}">
 			 		</td>
 			 		<td style="height:57px">
 			 			<div class="list_music_name">
-			 				<span style="color:#b9b7c6;font-weight:700;
-			 				font-family:cursive" th:text="${songs.data.songname}"></span>
+			 				<span class="songname" th:text="${songs.data.songname}"></span>
 			 			</div>
-			 			<div class="list_music_info" >
-			 				<a th:text="${songs.data.singer[0].name}" th:attr="mid=${songs.data.singer[0].mid}"></a>
+			 			<div class="list_music_info" style="font-family:cursive;font-size:10px;">
+			 				<a style="color:#615d71" th:text="${songs.data.singer[0].name}" th:attr="mid=${songs.data.singer[0].mid}"></a>
 			 			</div>
 			 		</td>
-			 		<td width="80px">
-			 			
-			 		</td>
+			 		<td width="80px"></td>
 			 		<td width="50px" >
-			 			<div  class="more" style="float: right;padding-top: 15px;">
+			 			<div  class="more" style="float:right;padding-top: 15px;">
 			 				<span class="glyphicon glyphicon-option-horizontal"></span>
 			 			</div>
 			 		</td>
@@ -177,11 +175,47 @@
 			</table>
 		</div>
 	</div>
-	<div id="player" style="width:100%;height:60px;background-color:#fe0041;
-	position:fixed;bottom:0">
-		<audio id="audio"></audio>
-		<div>
+	<div id="player">
+		<audio id="audio" songmid="" rowid=""></audio>
+		<div class="row" id="player_normal" >
+			<div class="col-xs-2" onclick="shellPlayer()">
+				<div id="player_icon">
+					<img id="singer_cover" src="" class="img-circle">
+				</div>
+			</div>
+			<div class="col-xs-5" onclick="shellPlayer()">
+				<div id="player_info" style="margin-top:5px;">
+	 				<span class="songname" id="player_songname"></span>
+	 			</div>
+	 			<div>
+	 				<span class="singername" style="color:#fa92a7" id="player_singername"></span>
+	 			</div>
+			</div>
+			<div class="col-xs-4 row player_func_icon">
+				<div class="col-xs-4">
+					<img id="play" src="/images/app/play.svg" isplay="false">
+				</div>
+				<div class="col-xs-4">
+					<img id="next" src="/images/app/next.svg" >
+				</div>
+				<div class="col-xs-4">
+					<img id="menu" src="/images/app/menu.svg" >
+				</div>
+			</div>
+		</div>
+		<div id="player_super" onclick="shellPlayer()">
+			<div id="lyr_title">
+				
+			</div>
+			<div id="lyr_helper">
 			
+			</div>
+			<div id="lyr_content">
+			
+			</div>
+			<div id="player_pro">
+			
+			</div>
 		</div>
 	</div>
 	<div class="row" id="helper" style="display:none;position:absolute;width:90px">
@@ -195,5 +229,6 @@
 			<img alt="add" src="/images/app/add.svg" class="helper_icon">
 		</div>
 	</div>
+
 </body>
 </html>

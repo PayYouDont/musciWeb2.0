@@ -42,7 +42,6 @@ public class MusicController extends BaseController{
 	@Resource
 	private MusicService service;
 	
-	
 	@GetMapping("index_pc")
 	public ModelAndView indexPC(Model model,Integer id,Integer pageIndex) {
 		User user = new User();
@@ -116,6 +115,15 @@ public class MusicController extends BaseController{
 			FileUtil.wirteFile(in, out);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
+		}
+	}
+	@GetMapping("getlyr")
+	public HashMap<String, Object> getlyr(String songid) {
+		try {
+			return JsonWrapper.successWrapper(service.getlyr(songid));
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return JsonWrapper.failureWrapper("获取失败");
 		}
 	}
 }
