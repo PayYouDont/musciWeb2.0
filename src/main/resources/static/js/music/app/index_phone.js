@@ -140,9 +140,52 @@ function changePlayer(albummid){
 	var imgUrl = getCover(albummid);
 	$("#lyr_bg").css({"background-image":"url("+imgUrl+")"});
 	$("#player").css("background-color","#fff");
+	timePointRun();
 }
 function resPlayer(){
 	$("#player_normal").show();
 	$("#player_super").hide();
 	$("#player").css({"background-color":"#fe0041"});
+}
+function timePointRun(){
+	var point = document.getElementById("time_point");
+	//起始位置x坐标
+	var startX = point.offsetLeft;
+	//起始位置y坐标
+	var startY = point.offsetTop + 9;
+	var endX = document.getElementsByClassName("progress_bar")[0].offsetWidth + 4;
+	var bg = document.getElementById("bar_bg");
+	var d = bg.offsetWidth;
+	var h =  bg.offsetHeight;
+	//圆半径
+	//var r = Math.pow(d,2)/(8*h)+(h/2);
+	var r = d/2;
+	//圆心坐标
+	var centerX = bg.offsetLeft + r - 4; 
+	var centerY = bg.offsetTop + r - 4;
+	var l = document.getElementsByClassName("progress_bar")[0].offsetWidth;
+	run(centerX,centerY,r,startX,endX,startY);
+}
+var times=0;
+function run(centerX,centerY,r,startX,endX,startY){
+	times += 1;
+	var hudu = (2*Math.PI/720)*times;
+	var x = centerX + Math.cos(hudu)*r;
+	var y = centerY + Math.sin(hudu)*r;
+	while(x<startX||x>endX||y>(startY)){
+		times += 1;
+		hudu = (2*Math.PI/720)*times;
+		x = centerX + Math.cos(hudu)*r;
+		y = centerY + Math.sin(hudu)*r;
+	}
+	$("#time_point").animate({
+		left:x+'px',
+		top:y+'px'
+		},50,function(){
+			if(x>(endX-9)&&y>(startY-4)){
+				console.log("over")
+				return;
+			}
+			run(centerX,centerY,r,startX,endX,startY);
+	});
 }

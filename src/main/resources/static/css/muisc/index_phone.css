@@ -83,13 +83,15 @@ span, #nav .navbar-default .navbar-brand {
     margin-left: 5px;
     margin-top: 2px;
 }
-#helper div{
-	padding: 0;
-    height: 25px;
-    background: #3d3662;
+#helper div,.lyr_helper div{
     border-radius: 20px 20px;
-    width: 25px;
+}
+#helper div{
+	width: 25px;
+	height: 25px;
+    background: #3d3662;
     margin-left: 3px;
+    padding: 0;
 }
 #player_icon{
 	width: 40px;
@@ -151,7 +153,10 @@ span, #nav .navbar-default .navbar-brand {
 	height:100%;
 	position: absolute;
 	top:0;
-	background: linear-gradient(15deg,rgba(57,49,89,0.7) 60%,rgba(219,213,182,0.4) 0%);
+	background: linear-gradient(15deg,rgba(57,49,89,0.9) 60%,rgba(219,213,182,0.5) 0%);
+	/* background: url("/images/app/bg.png"); */
+	background-size: cover;
+	opacity:0.9;
 }
 .lyr_title{
 	margin: auto;
@@ -165,31 +170,32 @@ span, #nav .navbar-default .navbar-brand {
 }
 .lyr_player{
 	position: absolute;
-	bottom: 0px;
+	top: 88%;
 	width: 100%;
 }
 .progress_bar{
 	width: 90%;
+    height: 90vw;
     overflow: hidden;
     position: absolute;
-    top: -20px;
-    left: 20px;
+    top: -3%;
+    left: 5%;
 }
-.bar_bg,.player_board{
-	width: 110%;
-    height: 100px;
+#bar_bg,.player_board{
+	width: 200%;
+    height: 200vw;
     border: 1px solid #fbfaf8;
-    border-radius: 50% 50% 0 0/100% 100% 0 0;
-    border-bottom: none;
+    border-radius: 50%;
     margin: auto;
-    margin-left: -17px;
+    margin-left: -50%;
 }
 .player_board{
 	background-color:#fe0041;
 }
-.bar_bg{
-	width: 120%;
-	margin-left: -33.5px
+#bar_bg{
+	width: 200%;
+    height: 180vw;
+    margin-top:5px;
 }
 #time_point{
     width: 8px;
@@ -197,6 +203,49 @@ span, #nav .navbar-default .navbar-brand {
     border-radius: 4px;
     position: absolute;
     top: 40px;
-    left:1px;
-    background-color:#fbfaf8;
+    left: 0px;
+    background-color: #fbfaf8;
+}
+.lyr_helper div{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+}
+.lyr_icon{
+	width: 25px;
+	height: 25px;
+	margin-left: 7px;
+    margin-top: 7px;
+}
+.icon_collect{
+	background: #fe0041;
+    top: 305px;
+    left: 220px;
+}
+.icon_more{
+	background: #00c7a5;
+    top: 320px;
+    left: 270px;
+}
+.icon_share{
+	background: #842efe;
+    top: 335px;
+    left: 320px;
+}
+#lyr_table{
+	position: absolute;
+    top: 40px;
+    width: 90%;
+    height: 50px;
+}
+#lyr_table td img{
+	margin-left: 36.5px;
+}
+.lyr_content{
+	margin-top:35%;
+	width: 70%;
+	margin-left: auto;
+}
+.top h3,.top h5{
+	color: #fbfaf8;
 }
