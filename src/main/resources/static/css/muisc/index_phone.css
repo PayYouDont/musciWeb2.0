@@ -174,8 +174,8 @@ span, #nav .navbar-default .navbar-brand {
 	width: 100%;
 }
 .progress_bar{
-	width: 90%;
-    height: 90vw;
+	width: 92%;
+    height: 92vw;
     overflow: hidden;
     position: absolute;
     top: -3%;
@@ -202,7 +202,7 @@ span, #nav .navbar-default .navbar-brand {
     height: 8px;
     border-radius: 4px;
     position: absolute;
-    top: 40px;
+    top: 45px;
     left: 0px;
     background-color: #fbfaf8;
 }

@@ -1,3 +1,4 @@
+var app = {};
 $(function(){
 	var myTouch = util.toucher(document
 			.getElementById('carousel-example-generic'));
@@ -6,10 +7,10 @@ $(function(){
 	}).on('swipeRight', function(e) {
 		$('#carleft').click();
 	});
-	init();
+	app.init();
 })
 //初始化
-function init(){
+app.init = function(){
 	//初始化播放器
 	setPlaer(0)
 	//歌曲列表绑定点击事件
@@ -17,7 +18,7 @@ function init(){
 		var rowid = $(this).attr("rowid");
 		var mid = songs[rowid].data.songmid;
 		setPlaer(rowid);
-		play(mid);
+		app.play(mid);
 	});
 	//分享添加功能绑定点击事件
 	$(".more").off("click").on("click",function(e){
@@ -39,7 +40,7 @@ function init(){
 		var mid = $("#audio").attr("mid");
 		if(!mid||mid.trim()==""){//没有选择的时候默认播放第一首
 			mid = songs[0].data.songmid;
-			play(mid);
+			app.play(mid);
 			$("#audio").attr("mid", mid);
 			return
 		}
@@ -60,7 +61,7 @@ function setPlaer(rowid){
 	$("#singer_cover").attr("src",imgUrl);
 }
 //获取歌曲的相关信息并播放
-function play(mid){
+app.play = function(mid){
 	var vkey = getVkey(mid);
 	var playUrl = getM4a(mid,vkey);
 	$("#audio").attr("src",playUrl);
@@ -140,6 +141,7 @@ function changePlayer(albummid){
 	var imgUrl = getCover(albummid);
 	$("#lyr_bg").css({"background-image":"url("+imgUrl+")"});
 	$("#player").css("background-color","#fff");
+	var time = 60;
 	timePointRun();
 }
 function resPlayer(){
@@ -147,7 +149,32 @@ function resPlayer(){
 	$("#player_super").hide();
 	$("#player").css({"background-color":"#fe0041"});
 }
+var it;
 function timePointRun(){
+	var param = app.playerParm();
+	it = setInterval(function() {
+		app.currentTime++;
+		console.log(app.currentTime)
+		app.run(param,app.currentTime);
+		if(app.currentTime == app.songTime){
+			app.currentTime = 0;
+			clearInterval(it);
+		}
+	},1000);
+	
+}
+app.songTime = 60;
+app.currentTime = 0;
+app.run = function(param,currentTime){
+	var hudu = (Math.PI/(app.songTime*3))*(param.amount+currentTime);
+	var x = param.centerX + Math.cos(hudu)*param.r;
+	var y = param.centerY + Math.sin(hudu)*param.r;
+	if(x>(param.endX-9)&&y>(param.startY-4)){
+		return;
+	}
+	$("#time_point").animate({top:y+'px',left:x+'px'},10);
+}
+app.playerParm = function (){
 	var point = document.getElementById("time_point");
 	//起始位置x坐标
 	var startX = point.offsetLeft;
@@ -163,29 +190,24 @@ function timePointRun(){
 	//圆心坐标
 	var centerX = bg.offsetLeft + r - 4; 
 	var centerY = bg.offsetTop + r - 4;
-	var l = document.getElementsByClassName("progress_bar")[0].offsetWidth;
-	run(centerX,centerY,r,startX,endX,startY);
-}
-var times=0;
-function run(centerX,centerY,r,startX,endX,startY){
-	times += 1;
-	var hudu = (2*Math.PI/720)*times;
+	var amount = 0;
+	var songTime = this.songTime;
+	var hudu = (Math.PI/(songTime*3))*amount;
 	var x = centerX + Math.cos(hudu)*r;
 	var y = centerY + Math.sin(hudu)*r;
 	while(x<startX||x>endX||y>(startY)){
-		times += 1;
-		hudu = (2*Math.PI/720)*times;
+		amount += 1;
+		hudu = (Math.PI/(songTime*3))*amount;
 		x = centerX + Math.cos(hudu)*r;
 		y = centerY + Math.sin(hudu)*r;
 	}
-	$("#time_point").animate({
-		left:x+'px',
-		top:y+'px'
-		},50,function(){
-			if(x>(endX-9)&&y>(startY-4)){
-				console.log("over")
-				return;
-			}
-			run(centerX,centerY,r,startX,endX,startY);
-	});
+	return {
+		centerX:centerX,
+		centerY:centerY,
+		r:r,
+		startX:startX,
+		endX:endX,
+		startY:startY,
+		amount:amount
+	};
 }
