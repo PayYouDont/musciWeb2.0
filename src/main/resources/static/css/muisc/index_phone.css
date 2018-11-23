@@ -202,8 +202,8 @@ span, #nav .navbar-default .navbar-brand {
     height: 8px;
     border-radius: 4px;
     position: absolute;
-    top: 45px;
-    left: 0px;
+/*     top: 45px;
+    left: 0px; */
     background-color: #fbfaf8;
 }
 .lyr_helper div{
