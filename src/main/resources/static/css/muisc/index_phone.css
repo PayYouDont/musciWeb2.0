@@ -132,6 +132,7 @@ span, #nav .navbar-default .navbar-brand {
 #player_super,#lyr_bg{
 	height: 100%;
 	width: 100%;
+	text-align: center;
 }
 #lyr_bg{
 	background-repeat: no-repeat;
@@ -159,14 +160,15 @@ span, #nav .navbar-default .navbar-brand {
 	opacity:0.9;
 }
 .lyr_title{
-	margin: auto;
-	margin-top:50%
+	height: 45%;
 }
-.lyr_title span{
+.lyr_title h1{
 	color: #fbfaf8;
-    font-size: 35px;
+    font-size: 30px;
     letter-spacing: 2px;
     font-weight: 300;
+    position: relative;
+    top: 55%;
 }
 .lyr_player{
 	position: absolute;
@@ -179,7 +181,7 @@ span, #nav .navbar-default .navbar-brand {
     overflow: hidden;
     position: absolute;
     top: -3%;
-    left: 5%;
+    left: 4%;
 }
 #bar_bg,.player_board{
 	width: 200%;
@@ -202,9 +204,12 @@ span, #nav .navbar-default .navbar-brand {
     height: 8px;
     border-radius: 4px;
     position: absolute;
-/*     top: 45px;
-    left: 0px; */
     background-color: #fbfaf8;
+}
+.lyr_helper{
+	position: absolute;
+	bottom: 60%;
+	width: 100%;
 }
 .lyr_helper div{
 	position: absolute;
@@ -214,23 +219,22 @@ span, #nav .navbar-default .navbar-brand {
 .lyr_icon{
 	width: 25px;
 	height: 25px;
-	margin-left: 7px;
     margin-top: 7px;
 }
 .icon_collect{
 	background: #fe0041;
-    top: 305px;
-    left: 220px;
+    top: -20px;
+    left: calc(100% - 170px);
 }
 .icon_more{
 	background: #00c7a5;
-    top: 320px;
-    left: 270px;
+    top: -5px;
+    left: calc(100% - 120px);
 }
 .icon_share{
 	background: #842efe;
-    top: 335px;
-    left: 320px;
+    top: 10px;
+    left: calc(100% - 70px);
 }
 #lyr_table{
 	position: absolute;
@@ -241,11 +245,21 @@ span, #nav .navbar-default .navbar-brand {
 #lyr_table td img{
 	margin-left: 36.5px;
 }
-.lyr_content{
-	margin-top:35%;
-	width: 70%;
-	margin-left: auto;
-}
 .top h3,.top h5{
+	color: #fbfaf8;
+}
+.time{
+	position: absolute;
+}
+.time span{
+	color:#fbfaf8;
+}
+#currentTime{
+	left: 0;
+}
+#songTime{
+	right: 0;
+}
+.center p{
 	color: #fbfaf8;
 }

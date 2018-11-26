@@ -1,7 +1,7 @@
 var app = {};
 $(function(){
-	var myTouch = util.toucher(document
-			.getElementById('carousel-example-generic'));
+	app.songList = songs;
+	var myTouch = util.toucher(document.getElementById('carousel-example-generic'));
 	myTouch.on('swipeLeft', function(e) {
 		$('#carright').click();
 	}).on('swipeRight', function(e) {
@@ -17,6 +17,8 @@ app.init = function(){
 	$(".songs").on("click",function(){
 		var rowid = $(this).attr("rowid");
 		var mid = songs[rowid].data.songmid;
+		app.currentRowid = rowid;
+		app.currentMid = mid;
 		setPlayer(rowid);
 		app.play(mid);
 	});
@@ -52,6 +54,8 @@ function setPlayer(rowid){
 	$("#audio").attr("rowid",rowid);
 	var row = songs[rowid];
 	var mid = row.data.songmid;
+	app.currentRowid = rowid;
+	app.currentMid = mid;
 	var songname = row.data.songname;
 	$("#player_songname").text(songname);
 	var singername = row.data.singer[0].name;
@@ -59,6 +63,29 @@ function setPlayer(rowid){
 	var  albummid = row.data.albummid;
 	var imgUrl = getCover(albummid);
 	$("#singer_cover").attr("src",imgUrl);
+	$("#currentTime span").text(formatTime(app.currentTime));
+	$("#songTime span").text(formatTime(app.songTime));
+}
+function formatTime(value){
+	var second = value;//秒
+	var minute = 0;//分
+	var hour = 0;//时
+	if(second>59){
+		minute = parseInt(second/60);
+		second = parseInt(second%60);
+		if(minute>59){
+			hour = parseInt(minute/60);
+			minute = parseInt(minute%60);
+		}
+	}
+	second = second>10?second:"0"+second;
+	minute = minute>10?minute:"0"+minute;
+	if(hour<1){
+		return minute+":"+second;
+	}else{
+		hour = hour>10?hour:"0"+hour;
+		return hour+":"+minute+":"+second;
+	}
 }
 //获取歌曲的相关信息并播放
 app.play = function(mid){
@@ -141,20 +168,63 @@ function changePlayer(albummid){
 	var imgUrl = getCover(albummid);
 	$("#lyr_bg").css({"background-image":"url("+imgUrl+")"});
 	$("#player").css("background-color","#fff");
+	loadLyr();
 	timePointRun();
+	timePointTouch();
 }
 function resPlayer(){
 	$("#player_normal").show();
 	$("#player_super").hide();
 	$("#player").css({"background-color":"#fe0041"});
 }
-
+function loadLyr(){
+	var song = app.getCurrentSong();
+	$(".lyr_title h1").text(song.data.songname);
+	$("#top_song_title").text(song.data.songname);
+	var singer = "";
+	for(i in song.data.singer){
+		singer += ","+song.data.singer[i].name;
+	}
+	$("#top_song_singer").text(singer.substring(1));
+	var songid = song.data.songid;
+	$.ajax({
+		url:'/music/getlyr',
+		dataType:'json',
+		type:'get',
+		data:{songid:songid},
+		success:function(json){
+			if (json.success) {
+				var data = json.data;
+				data = data.substring(7,data.length-1);
+				data = JSON.parse(data);
+				var lrc = data.lyric;
+				ly = lrc.replace(/&#(\d+);/g, (str, match) => String.fromCharCode(match));
+				console.log(ly)
+			}
+		}
+	});
+}
+function timePointTouch(){
+	var param = app.playerParm();
+	var pointTouch = util.toucher(document.getElementById('time_point'));
+	pointTouch.on('swipe',function(e){
+		var x = e.pageX - 15;
+		var time = app.songTime - (Math.acos((x - param.centerX)/param.r)-Math.PI/3)*app.songTime/param.radian;
+		time = Math.ceil(time) - 2;
+		if(time>app.songTime){
+			time = app.songTime - 1;
+		}else if(time<0){
+			time = 0;
+		}
+		app.currentTime = time;
+	});
+}
 function timePointRun(){
 	var param = app.playerParm();
 	var it = setInterval(function() {
 		app.currentTime++;
 		app.run(param,app.currentTime);
-		if(app.currentTime == app.songTime){
+		if(app.currentTime >= app.songTime){
 			app.currentTime = 0;
 			clearInterval(it);
 		}
@@ -163,17 +233,33 @@ function timePointRun(){
 }
 app.songTime = 60;
 app.currentTime = 0;
+app.getCurrentSong = function(){
+	var rowid = this.currentRowid;
+	return songs[rowid];
+}
 app.run = function(param,currentTime){
 	var radian = param.radian/app.songTime*currentTime;
 	var x = param.centerX + Math.cos(radian+Math.PI*4/3)*param.r;
 	var y = param.centerY + Math.sin(radian+Math.PI*4/3)*param.r;
+	if(x>app.timePoint_end.x){
+		x = app.timePoint_end.x;
+		y = app.timePoint_end.y;
+	}
 	$("#time_point").animate({top:y+'px',left:x+'px'},10);
+	$("#currentTime span").text(formatTime(currentTime));
 }
 app.jumpTime = function(){
+	var param = app.playerParm();
 	$("#bar_bg").off("click").on("click",function(e){
-		var x = e.offsetX;
+		var x = e.pageX - 15;
 		var y = e.offsetY;
-		console.log(x,y,e)
+		var time = app.songTime - (Math.acos((x - param.centerX)/param.r)-Math.PI/3)*app.songTime/param.radian;
+		time = Math.ceil(time) - 2;
+		var radian = param.radian/app.songTime*time;
+		var y1 = param.centerY + Math.sin(radian+Math.PI*4/3)*param.r;
+		if(y<y1+5){
+			app.currentTime = time;
+		}
 	})
 }
 app.playerParm = function (){
@@ -190,9 +276,13 @@ app.playerParm = function (){
 	//弧度
 	var radian = Math.acos(1-(d*d)/(2*r*r));
 	var songTime = this.songTime;
-	var x = centerX + Math.cos(Math.PI*4/3)*r;
-	var y = centerY + Math.sin(Math.PI*4/3)*r;
-	$("#time_point").css({top:y+'px',left:x+'px'});
+	var startX = centerX + Math.cos(Math.PI*4/3)*r;
+	var startY = centerY + Math.sin(Math.PI*4/3)*r;
+	var endX = centerX + Math.cos(radian+Math.PI*4/3)*r
+	var endY = centerY + Math.sin(radian+Math.PI*4/3)*r
+	this.timePoint_start = {x:startX,y:startY};
+	this.timePoint_end = {x:endX,y:endY};
+	$("#time_point").css({top:startY+'px',left:startX+'px'});
 	return {
 		centerX:centerX,
 		centerY:centerY,
