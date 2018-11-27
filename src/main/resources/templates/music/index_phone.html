@@ -71,7 +71,7 @@
 		</nav>
 	</div>
 	<div id="slide-image" class="div_main">
-		<div id="carousel-example-generic" class="carousel slide both" data-ride="carousel">
+		<div id="carousel" class="carousel slide both" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
 				<li data-target="#carousel-example-generic" data-slide-to="0"class="active"></li>
@@ -207,6 +207,9 @@
 			
 			<div id="lyr_core">
 				<div class="lyr_title">
+					<div id="sliding_down">
+						<img src="/images/app/sliding_down.svg" width="30px" height="30px">
+					</div>
 					<h1>年少有为</h1>
 				</div>
 				<div class="lyr_helper">
@@ -241,13 +244,13 @@
 					<table id="lyr_table">
 						<tbody>
 							<tr>
-								<td id="lyr_order" >
-									<img src="/images/app/ordre_play_1.svg" width="25px" height="25px">
+								<td id="lyr_order" order="1">
+									<img src="/images/app/order_play_1.svg" width="25px" height="25px">
 								</td>
 								<td id="lyr_pause">
 									<img src="/images/app/media-previous.svg" width="30px" height="30px">
 								</td>
-								<td id="lyr_play">
+								<td id="lyr_play" isplay="false">
 									<img src="/images/app/play.svg" width="50px" height="50px">
 								</td>
 								<td id="lyr_next">

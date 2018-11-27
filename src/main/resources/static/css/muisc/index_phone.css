@@ -168,7 +168,7 @@ span, #nav .navbar-default .navbar-brand {
     letter-spacing: 2px;
     font-weight: 300;
     position: relative;
-    top: 55%;
+    top: calc(55% - 30px);
 }
 .lyr_player{
 	position: absolute;
