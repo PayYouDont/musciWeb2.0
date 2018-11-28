@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  */
 @lombok.Data
-public class MusicList{
+public class MusicData{
 	private int code;
 	private int color;
 	private int comment_num;

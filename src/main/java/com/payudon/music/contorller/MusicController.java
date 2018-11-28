@@ -20,12 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.payudon.common.base.controller.BaseController;
 import com.payudon.common.entity.Page;
-import com.payudon.music.entity.MusicList.Songlist;
+import com.payudon.music.entity.MusicData.Songlist;
+import com.payudon.music.entity.SearchData;
 import com.payudon.music.service.MusicService;
 import com.payudon.user.entity.User;
 import com.payudon.user.service.UserService;
 import com.payudon.util.FileUtil;
 import com.payudon.util.JsonWrapper;
+import com.payudon.util.ParseUtil;
 
 /** 
 * @ClassName: MusicController 
@@ -41,14 +43,25 @@ public class MusicController extends BaseController{
 	private UserService userService;
 	@Resource
 	private MusicService service;
-	
+	/**
+	 * @Title: indexPC 
+	 * @Description: TODO(电脑端首页) 
+	 * @param model
+	 * @param id
+	 * @param pageIndex
+	 * @return    设定文件 
+	 * @return ModelAndView    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月28日 下午3:24:48
+	 */
 	@GetMapping("index_pc")
 	public ModelAndView indexPC(Model model,Integer id,Integer pageIndex) {
 		User user = new User();
 		if(id!=null) {
 			user = userService.findById(id);
 		}
-		List<Songlist> list = service.getList().getSonglist();
+		List<Songlist> list = service.getMusicData().getSonglist();
 		List<Songlist> songlist = new ArrayList<>();
 		Page page = new Page();
 		page.setTotal(list.size());
@@ -63,35 +76,99 @@ public class MusicController extends BaseController{
 		model.addAttribute("page",page);
 		return new ModelAndView("music/index_pc");
 	}
+	/**
+	 * @Title: indexPhone 
+	 * @Description: TODO(手机端首页) 
+	 * @param model
+	 * @param id
+	 * @param pageIndex
+	 * @return    设定文件 
+	 * @return ModelAndView    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月28日 下午3:25:02
+	 */
 	@GetMapping("index_phone")
 	public ModelAndView indexPhone(Model model,Integer id,Integer pageIndex) {
 		User user = new User();
 		if(id!=null) {
 			user = userService.findById(id);
 		}
-		List<Songlist> list = service.getList().getSonglist();
-		List<Songlist> songlist = new ArrayList<>();
-		Page page = new Page();
-		page.setTotal(list.size());
-		if(pageIndex!=null) {
-			page.setPageIndex(pageIndex);
-		}
-		for (int i=page.getBegin();i<page.getEnd();i++) {
-			songlist.add(list.get(i));
-		}
+		List<Songlist> songlist = service.getMusicData().getSonglist();
+		service.setSonglist(songlist);
 		model.addAttribute("user", user);
 		model.addAttribute("songlist",songlist);
-		model.addAttribute("page",page);
 		return new ModelAndView("music/index_phone");
 	}
+	
 	@GetMapping("list")
 	public HashMap<String,Object> list(){
 		try {
-			return JsonWrapper.successWrapper(service.getList());
+			return JsonWrapper.successWrapper(service.getMusicData());
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());
 		}
+	}
+	/**
+	 * @Title: player 
+	 * @Description: TODO(播放器页面) 
+	 * @param model
+	 * @param rowid
+	 * @param isplay
+	 * @return    设定文件 
+	 * @return ModelAndView    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月28日 下午3:25:21
+	 */
+	@GetMapping("player")
+	public ModelAndView player(Model model,Integer rowid,String isplay) {
+		List<Songlist> list = service.getSonglist();
+		if(rowid==null||rowid>=list.size()||rowid<0) {
+			return null;
+		}
+		Songlist song = list.get(rowid);
+		String songid = ""+song.getData().getSongid();
+		try {	
+			String lyr = service.getlyr(songid).toString();
+			model.addAttribute("lyr", lyr);
+		} catch (Exception e) {
+			logger.error("获取歌词error",e);
+		}
+		if(isplay==null) {
+			isplay = "true";
+		}
+		String songmid = song.getData().getSongmid();
+		String albummid = song.getData().getAlbummid();
+		model.addAttribute("songmid", songmid);
+		model.addAttribute("albummid", albummid);
+		model.addAttribute("song", song);
+		model.addAttribute("isplay", isplay);
+		return new ModelAndView("music/player");
+	}
+	/**
+	 * @Title: search 
+	 * @Description: TODO(搜索页面) 
+	 * @param model
+	 * @param w
+	 * @return    设定文件 
+	 * @return ModelAndView    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月28日 下午3:26:00
+	 */
+	@GetMapping("search")
+	public ModelAndView search(Model model,String w) {
+		try {
+			SearchData searchData = service.getSearchData(w);
+			List<Songlist> songlist = ParseUtil.parseSonglist(searchData);
+			service.setSonglist(songlist);
+			model.addAttribute("songlist",songlist);
+		} catch (Exception e) {
+			logger.error("搜索error",e);
+		}
+		return new ModelAndView("music/index_phone");
 	}
 	@PostMapping("getVkey")
 	public HashMap<String, Object> getVkey(String songmid) {
@@ -117,6 +194,16 @@ public class MusicController extends BaseController{
 			logger.error(e.getMessage(),e);
 		}
 	}
+	/**
+	 * @Title: getlyr 
+	 * @Description: TODO(歌词) 
+	 * @param songid
+	 * @return    设定文件 
+	 * @return HashMap<String,Object>    返回类型 
+	 * @throws 
+	 * @author peiyongdong
+	 * @date 2018年11月28日 下午3:26:35
+	 */
 	@GetMapping("getlyr")
 	public HashMap<String, Object> getlyr(String songid) {
 		try {

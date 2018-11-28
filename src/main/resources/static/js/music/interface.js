@@ -15,6 +15,12 @@ function getMp3Pro(songmid,vkey){
 	return 'http://dl.stream.qqmusic.qq.com/M800'+songmid+'.mp3?vkey='+vkey+'&guid=8604243058&uin=0&fromtag=53'
 }
 
+//搜索音乐
+function getSearch(search){
+   return "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=71064181038426066&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w="+search+"&g_tk=5381&jsonpCallback=MusicJsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+
+}
+
 function getCover(albummid){
 	return 'https://y.gtimg.cn/music/photo_new/T002R300x300M000'+albummid+'.jpg?max_age=2592000';
 

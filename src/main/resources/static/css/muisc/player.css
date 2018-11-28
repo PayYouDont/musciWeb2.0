@@ -1,0 +1,140 @@
+*{
+	margin:0px;padding:0px
+}
+body{
+	background-color: #0f093a
+}
+#lyr_bg{
+	height: 100%;
+	width: 100%;
+	text-align: center;
+}
+#lyr_bg{
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	-webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+}
+#lyr_bg{
+	filter:alpha(Opacity=70);
+	-moz-opacity:0.7;
+	opacity: 0.7;
+	width: 100%;
+}
+#lyr_core{
+	width: 100%;
+	height:100%;
+	position: absolute;
+	top:0;
+	background: linear-gradient(15deg,rgba(57,49,89,0.9) 60%,rgba(219,213,182,0.5) 0%);
+	/* background: url("/images/app/bg.png"); */
+	background-size: cover;
+	opacity:0.9;
+}
+.lyr_title{
+	height: 45%;
+}
+.lyr_title h1{
+	color: #fbfaf8;
+    font-size: 30px;
+    letter-spacing: 2px;
+    font-weight: 300;
+    position: relative;
+    top: calc(55% - 30px);
+}
+.lyr_player{
+	position: absolute;
+	top: 88%;
+	width: 100%;
+}
+.progress_bar{
+	width: 92%;
+    height: 92vw;
+    overflow: hidden;
+    position: absolute;
+    top: -3%;
+    left: 4%;
+}
+#bar_bg,.player_board{
+	width: 200%;
+    height: 200vw;
+    border: 1px solid #fbfaf8;
+    border-radius: 50%;
+    margin: auto;
+    margin-left: -50%;
+}
+.player_board{
+	background-color:#fe0041;
+}
+#bar_bg{
+	width: 200%;
+    height: 180vw;
+    margin-top:5px;
+}
+#time_point{
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    position: absolute;
+    background-color: #fbfaf8;
+}
+.lyr_helper{
+	position: absolute;
+	bottom: 60%;
+	width: 100%;
+}
+.lyr_helper div{
+	position: absolute;
+	width: 40px;
+	height: 40px;
+}
+.lyr_icon{
+	width: 25px;
+	height: 25px;
+    margin-top: 7px;
+}
+.icon_collect{
+	background: #fe0041;
+    top: -20px;
+    left: calc(100% - 170px);
+}
+.icon_more{
+	background: #00c7a5;
+    top: -5px;
+    left: calc(100% - 120px);
+}
+.icon_share{
+	background: #842efe;
+    top: 10px;
+    left: calc(100% - 70px);
+}
+#lyr_table{
+	position: absolute;
+    top: 40px;
+    width: 90%;
+    height: 50px;
+}
+#lyr_table td img{
+	margin-left: 36.5px;
+}
+.top h3,.top h5{
+	color: #fbfaf8;
+}
+.time{
+	position: absolute;
+}
+.time span{
+	color:#fbfaf8;
+}
+#currentTime{
+	left: 0;
+}
+#songTime{
+	right: 0;
+}
+.center p{
+	color: #fbfaf8;
+}

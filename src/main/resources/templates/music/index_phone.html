@@ -48,9 +48,9 @@
 						<li>
 							<div class="input-group">
 								<span class="input-group-btn">
-								<button class="btn btn-default" type="button" style="color:#67558e">搜索</button>	
+								<button  class="btn btn-default" type="button" style="color:#67558e" onclick="search()">搜索</button>	
 								</span> 
-								<input type="text" class="form-control" placeholder="Search for...">
+								<input type="text" id="search" class="form-control" placeholder="Search for...">
 							</div>
 						</li>
 					</ul>
@@ -202,69 +202,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="player_super" onclick="shellPlayer()" style="display:none">
-			<div id="lyr_bg"></div>
-			
-			<div id="lyr_core">
-				<div class="lyr_title">
-					<div id="sliding_down">
-						<img src="/images/app/sliding_down.svg" width="30px" height="30px">
-					</div>
-					<h1>年少有为</h1>
-				</div>
-				<div class="lyr_helper">
-					<div class="icon_collect">
-						<img alt="collect" src="/images/app/favorite2.svg" class="lyr_icon">
-					</div>
-					<div class="icon_more">
-						<img alt="more" src="/images/app/more-o.svg" class="lyr_icon">
-					</div>
-					<div class="icon_share">
-						<img alt="share" src="/images/app/share2.svg" class="lyr_icon">
-					</div>
-				</div>
-				<div class="lyr_content">
-					<div class="top">
-						<h3 id="top_song_title">年少有为</h3>
-						<h5 id="top_song_singer">李荣浩</h5>
-					</div>
-					<div class="center">
-						<p>电视一直闪</p>
-					</div>
-				</div>
-				<div class="lyr_player">
-					<div class="progress_bar">
-						<div id="bar_bg">
-							<div id="currentTime" class="time"><span>0:00</span></div>
-							<div id="songTime" class="time"><span>3:20</span></div>
-						</div>
-						<div id="time_point"></div>
-					</div>
-					<div class="player_board"></div>
-					<table id="lyr_table">
-						<tbody>
-							<tr>
-								<td id="lyr_order" order="1">
-									<img src="/images/app/order_play_1.svg" width="25px" height="25px">
-								</td>
-								<td id="lyr_pause">
-									<img src="/images/app/media-previous.svg" width="30px" height="30px">
-								</td>
-								<td id="lyr_play" isplay="false">
-									<img src="/images/app/play.svg" width="50px" height="50px">
-								</td>
-								<td id="lyr_next">
-									<img src="/images/app/media-next2.svg" width="30px" height="30px">
-								</td>
-								<td id="lyr_menu">
-									<img src="/images/app/menu.svg" width="30px" height="30px">
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+		<div id="player_super" onclick="shellPlayer()" style="display:none"></div>
 	</div>
 	<div class="row" id="helper" style="display:none;position:absolute;width:90px;margin-left: -25px;">
 		<div class="col-xs-4 col-md-4">
