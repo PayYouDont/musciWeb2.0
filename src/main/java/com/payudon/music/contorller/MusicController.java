@@ -95,7 +95,6 @@ public class MusicController extends BaseController{
 			user = userService.findById(id);
 		}
 		List<Songlist> songlist = service.getMusicData().getSonglist();
-		service.setSonglist(songlist);
 		model.addAttribute("user", user);
 		model.addAttribute("songlist",songlist);
 		return new ModelAndView("music/index_phone");
@@ -152,7 +151,6 @@ public class MusicController extends BaseController{
 		try {
 			SearchData searchData = service.getSearchData(w);
 			List<Songlist> songlist = ParseUtil.parseSonglist(searchData);
-			service.setSonglist(songlist);
 			model.addAttribute("songlist",songlist);
 		} catch (Exception e) {
 			logger.error("搜索error",e);

@@ -6,17 +6,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.payudon.music.entity.AllData;
 import com.payudon.music.entity.MusicData;
 import com.payudon.music.entity.SearchData;
-import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.util.UrlUtil;
-
-import lombok.Data;
 
 /**
  * @ClassName: MusicService
@@ -26,11 +23,8 @@ import lombok.Data;
  * 
  */
 @Service
-@Data
 public class MusicService {
-	
-	private List<Songlist> songlist;
-	
+
 	public String getSearchListUrl(String search) {
 		return "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=71064181038426066&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w="
 				+ search
@@ -44,6 +38,10 @@ public class MusicService {
 				+ "&topid=27&type=top&" + "song_begin=0&song_num=30&g_tk=5381&jsonpCallback=MusicJsonCallbacktoplist&"
 				+ "loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&"
 				+ "notice=0&platform=yqq&needNewCode=0";
+	}
+
+	public String getAllListUrl() {
+		return "https://u.y.qq.com/cgi-bin/musicu.fcg?callback=recom1250129690723727&g_tk=5381&jsonpCallback=recom1250129690723727&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data={\"comm\":{\"ct\":24},\"category\":{\"method\":\"get_hot_category\",\"param\":{\"qq\":\"\"},\"module\":\"music.web_category_svr\"},\"recomPlaylist\":{\"method\":\"get_hot_recommend\",\"param\":{\"async\":1,\"cmd\":2},\"module\":\"playlist.HotRecommendServer\"},\"playlist\":{\"method\":\"get_playlist_by_category\",\"param\":{\"id\":8,\"curPage\":1,\"size\":40,\"order\":5,\"titleid\":8},\"module\":\"playlist.PlayListPlazaServer\"},\"new_song\":{\"module\":\"QQMusic.MusichallServer\",\"method\":\"GetNewSong\",\"param\":{\"type\":0}},\"new_album\":{\"module\":\"music.web_album_library\",\"method\":\"get_album_by_tags\",\"param\":{\"area\":1,\"company\":-1,\"genre\":-1,\"type\":-1,\"year\":-1,\"sort\":2,\"get_tags\":1,\"sin\":0,\"num\":40,\"click_albumid\":0}},\"toplist\":{\"module\":\"music.web_toplist_svr\",\"method\":\"get_toplist_index\",\"param\":{}},\"focus\":{\"module\":\"QQMusic.MusichallServer\",\"method\":\"GetFocus\",\"param\":{}}}";
 	}
 
 	public String getLyrUrl(String songid) {
@@ -66,6 +64,13 @@ public class MusicService {
 		return list;
 	}
 
+	public AllData getAllData() {
+		String text = UrlUtil.getSongList(getAllListUrl());
+		JSONObject object = JSONObject.parseObject(text);
+		AllData bean = object.toJavaObject(AllData.class);
+		return bean;
+	}
+	
 	public StringBuffer getVkey(String urlStr) throws Exception {
 		return UrlUtil.getVkey(urlStr);
 	}
