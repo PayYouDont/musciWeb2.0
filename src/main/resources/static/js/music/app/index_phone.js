@@ -59,6 +59,14 @@ $(function(){
 		}
 		cutSong(rowid);
 	});
+	// 键盘回车搜索
+	$("#search").keydown(function(e) {
+		var key = e.which;
+		if (key == 13) {
+			//searchMusic();
+			search();
+		}
+	})
 })
 //搜索歌曲
 function search(){
@@ -158,17 +166,16 @@ function getVkey(mid){
 	return vkey;
 }
 function shellPlayer(){
-	var rowid = $("#audio").attr("rowid");
-	var row = songs[rowid];
-	var songmid = row.data.songmid;
-	var albummid = row.data.albummid;
 	var height = $("#player").height();
 	if(height==50){
 		$("#player").animate({"height":"100%"},function(){
 			$("#player_normal").hide();
 			$("#player_super").show();
+			var rowid = $("#audio").attr("rowid");
+			var row = songs[rowid];
+			var songid = row.data.songid;
 			var isplay = $("#play").attr("isplay");
-			var playerUrl = "../music/player?rowid="+rowid+"&isplay="+isplay;
+			var playerUrl = "../music/player?songid="+songid+"&isplay="+isplay;
 			$("#player_super").load(playerUrl);
 		});
 	}

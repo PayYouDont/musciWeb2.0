@@ -15,8 +15,6 @@
 <script type="text/javascript" src="/js/music/interface.js"></script>
 <script th:inline="javascript">
 	var lyr = [[${lyr}]];
-	var songmid = [[${songmid}]];
-	var albummid = [[${albummid}]];
 </script>
 
 <script type="text/javascript" src="/js/music/app/player.js"></script>
@@ -29,7 +27,7 @@
 			<div id="sliding_down">
 				<img src="/images/app/sliding_down.svg" width="30px" height="30px">
 			</div>
-			<h1 th:text="${song.data.songname}"></h1>
+			<h1></h1>
 		</div>
 		<div class="lyr_helper">
 			<div class="icon_collect">
@@ -44,8 +42,8 @@
 		</div>
 		<div class="lyr_content">
 			<div class="top">
-				<h3 id="top_song_title" th:text="${song.data.songname}"></h3>
-				<h5 id="top_song_singer" th:text="${song.data.singer[0].name}"></h5>
+				<h3 id="top_song_title"></h3>
+				<h5 id="top_song_singer"></h5>
 			</div>
 			<div class="center">
 				<!-- <p th:text="${lyr}">电视一直闪</p> -->

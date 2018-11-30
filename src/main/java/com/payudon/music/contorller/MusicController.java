@@ -123,13 +123,7 @@ public class MusicController extends BaseController{
 	 * @date 2018年11月28日 下午3:25:21
 	 */
 	@GetMapping("player")
-	public ModelAndView player(Model model,Integer rowid,String isplay) {
-		List<Songlist> list = service.getSonglist();
-		if(rowid==null||rowid>=list.size()||rowid<0) {
-			return null;
-		}
-		Songlist song = list.get(rowid);
-		String songid = ""+song.getData().getSongid();
+	public ModelAndView player(Model model,String songid,String isplay) {
 		try {	
 			String lyr = service.getlyr(songid).toString();
 			model.addAttribute("lyr", lyr);
@@ -139,11 +133,6 @@ public class MusicController extends BaseController{
 		if(isplay==null) {
 			isplay = "true";
 		}
-		String songmid = song.getData().getSongmid();
-		String albummid = song.getData().getAlbummid();
-		model.addAttribute("songmid", songmid);
-		model.addAttribute("albummid", albummid);
-		model.addAttribute("song", song);
 		model.addAttribute("isplay", isplay);
 		return new ModelAndView("music/player");
 	}
