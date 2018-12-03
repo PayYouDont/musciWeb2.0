@@ -102,19 +102,10 @@ function changeBG(){
 	$(".lyr_title h1,#top_song_title").text(songname);
 	var singername = row.data.singer[0].name;
 	$("#top_song_singer").text(singername);
+	var imgurl = "/images/app/order_play_"+app.order+".svg";
+	$("#lyr_order").attr("order",app.order)
+	$("#lyr_order img").attr("src",imgurl);
 }
-/*//设置播放器内容
-function setPlayer(rowid){
-	$("#audio").attr("rowid",rowid);
-	var row = songs[rowid];
-	var songname = row.data.songname;
-	$("#player_songname").text(songname);
-	var singername = row.data.singer[0].name;
-	$("#player_singername").text(singername);
-	var  albummid = row.data.albummid;
-	var imgUrl = getCover(albummid);
-	$("#singer_cover").attr("src",imgUrl);
-}*/
 //更新进度
 function updateProgress(ev){
 	var songTime = Math.floor(audio.duration);

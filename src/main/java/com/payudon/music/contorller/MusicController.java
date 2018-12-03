@@ -22,6 +22,7 @@ import com.payudon.common.base.controller.BaseController;
 import com.payudon.common.entity.Page;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.SearchData;
+import com.payudon.music.entity.AllData.V_hot;
 import com.payudon.music.service.MusicService;
 import com.payudon.user.entity.User;
 import com.payudon.user.service.UserService;
@@ -95,15 +96,17 @@ public class MusicController extends BaseController{
 			user = userService.findById(id);
 		}
 		List<Songlist> songlist = service.getMusicData().getSonglist();
+		ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
 		model.addAttribute("user", user);
 		model.addAttribute("songlist",songlist);
+		model.addAttribute("hotList",hotList);
 		return new ModelAndView("music/index_phone");
 	}
 	
 	@GetMapping("list")
 	public HashMap<String,Object> list(){
 		try {
-			return JsonWrapper.successWrapper(service.getMusicData());
+			return JsonWrapper.successWrapper(service.getAllData());
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return JsonWrapper.failureWrapper(e.getMessage());

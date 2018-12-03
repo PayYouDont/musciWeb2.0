@@ -263,3 +263,7 @@ span, #nav .navbar-default .navbar-brand {
 .center p{
 	color: #fbfaf8;
 }
+.item{
+	width: 100%;
+	height: 210px;
+}

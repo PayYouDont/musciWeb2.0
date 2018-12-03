@@ -5,6 +5,20 @@ app.order = 1;
 app.playerStatus = "miniPlayer";
 $(function(){
 	app.songList = songs;
+	 $("#carousel").carousel({
+         interval: 5000,
+         wrap: true
+     });
+	$('#carright').click(function(){
+		$("#carousel").carousel('next');
+	});
+	$('#carleft').click(function(){
+		$("#carousel").carousel('prev');
+	});
+	$(".carousel-indicators li").click(function(){
+		var index = $(this).data("slide-to");
+		$("#carousel").carousel(index);
+	});
 	util.toucher(document.getElementById('carousel'))
 	.on('swipeLeft', function(e) {
 		$('#carright').click();
