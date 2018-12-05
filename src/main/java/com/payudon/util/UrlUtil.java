@@ -92,4 +92,35 @@ public class UrlUtil {
 		in.close();
 		return sb;
 	}
+	public static StringBuffer getHotList(String urlStr,String disstid) throws Exception {
+		URL url = new URL(urlStr);
+		// 初始化一个链接到那个url的连接
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();// 打开连接
+		// 设置User-Agent
+		connection.setRequestProperty("User-Agent",
+				"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.67 Safari/537.36");
+		connection.setRequestProperty("referer", "https://y.qq.com/n/yqq/playlist/"+disstid+".html");
+		connection.connect();// 连接会话
+		InputStream is = connection.getInputStream();
+		BufferedReader in = new BufferedReader(new InputStreamReader(is,"utf8"));
+		StringBuffer sb = new StringBuffer();
+		String str = null;
+		while ((str = in.readLine()) != null) {
+			sb.append(str);
+		}
+		in.close();
+		return sb;
+	}
+	/*public static String getHotListUrl(String disstid) {
+		return "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid="+disstid+"&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+	}
+	public static void main(String[] args) throws Exception {
+		String disstid = "5813775548";
+		String urlStr = getHotListUrl(disstid);
+		String text = UrlUtil.getHotList(urlStr,disstid).toString();
+		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		JSONObject object = JSONObject.parseObject(text);
+		HotSongData bean = object.toJavaObject(HotSongData.class);
+		System.out.println(bean.getCdlist().get(0).getSonglist());
+	}*/
 }

@@ -20,9 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.payudon.common.base.controller.BaseController;
 import com.payudon.common.entity.Page;
+import com.payudon.music.entity.AllData.V_hot;
+import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.SearchData;
-import com.payudon.music.entity.AllData.V_hot;
 import com.payudon.music.service.MusicService;
 import com.payudon.user.entity.User;
 import com.payudon.user.service.UserService;
@@ -103,6 +104,21 @@ public class MusicController extends BaseController{
 		return new ModelAndView("music/index_phone");
 	}
 	
+	@GetMapping("hotList")
+	public ModelAndView hotList(Model model,String disstid,Integer index) {
+		try {
+			HotSongData hotSongData = service.getHotSongData(disstid);
+			List<Songlist> songlist = service.getSonglist(hotSongData);
+			ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
+			ArrayList<V_hot> hotListOne = new ArrayList<>();
+			hotListOne.add(hotList.get(index));
+			model.addAttribute("songlist",songlist);
+			model.addAttribute("hotList",hotListOne);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		return new ModelAndView("music/index_phone");
+	}
 	@GetMapping("list")
 	public HashMap<String,Object> list(){
 		try {
@@ -154,7 +170,9 @@ public class MusicController extends BaseController{
 		try {
 			SearchData searchData = service.getSearchData(w);
 			List<Songlist> songlist = ParseUtil.parseSonglist(searchData);
+			ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
 			model.addAttribute("songlist",songlist);
+			model.addAttribute("hotList",hotList);
 		} catch (Exception e) {
 			logger.error("搜索error",e);
 		}

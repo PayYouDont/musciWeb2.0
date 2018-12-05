@@ -2,7 +2,7 @@
 app.songTime = 0;
 //歌曲当前时间
 app.currentTime = 0;
-$(function(){
+var a = $(function(){
 	/*var data = lyr.substring(7,lyr.length-1);
 	var data = JSON.parse(data);
 	var lrc = data.lyric;
@@ -41,26 +41,21 @@ app.init = function(){
 	});
 	//下一曲
 	$("#lyr_next").off("click").on("click",function(){
-		$("#next").click();
-		var rowid = $("#audio").attr("rowid");
-		var row = songs[rowid];
-		var songid = row.data.songid;
+		var songid = app.currentSong.data.songid;
 		var playerUrl = "../music/player?songid="+songid;
-		$("#player_super").load(playerUrl);
+		$("#player_super").load(playerUrl,function(){
+			console.log(a)
+		});
+		$("#next").click();
 	});
 	//上一曲
 	$("#lyr_pause").off("click").on("click",function(){
-		var rowid = $("#audio").attr("rowid");
-		if(app.order==1){//顺序播放
-			if(rowid==0){
-				rowid = app.songList.length-1;
-			}else{
-				rowid--;
-			}
-		}else if(app.order==3){//随机播放
-			rowid = Math.floor(Math.random()*app.songList.length);
+		if(app.songList.length>0){
+			var playid = app.getPrevSongId();
+			var song = app.songList[playid];
+			$("#audio").attr("playid",playid);
+			cutSong(song);
 		}
-		cutSong(rowid);
 		var rowid = $("#audio").attr("rowid");
 		var playerUrl = "../music/player?rowid="+rowid;
 		$("#player_super").load(playerUrl);
@@ -88,7 +83,6 @@ app.init = function(){
 		$(this).attr("order",order)
 		$("#lyr_order img").attr("src",imgurl);
 	});
-	
 }
 //更改背景
 function changeBG(){
@@ -140,9 +134,7 @@ app.timePointTouch = function() {
 
 app.getCurrentSong = function(){
 	var rowid = $("#audio").attr("rowid");
-	var mid = $("#audio").attr("songmid");
 	app.currentRowid = rowid;
-	app.currentMid = mid;
 	return songs[rowid];
 }
 app.tiomePointRun = function(){

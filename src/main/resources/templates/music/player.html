@@ -7,16 +7,10 @@
 <meta name="viewport"
 	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/css/muisc/player.css">
-<script type="text/javascript" src="/core/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/core/toucher.js"></script>
-<script type="text/javascript" src="/js/music/interface.js"></script>
 <script th:inline="javascript">
 	var lyr = [[${lyr}]];
 </script>
-
 <script type="text/javascript" src="/js/music/app/player.js"></script>
 <title>播放器页面</title>
 </head>
@@ -75,7 +69,7 @@
 							<img src="/images/app/media-next2.svg" width="30px" height="30px">
 						</td>
 						<td id="lyr_menu">
-							<img src="/images/app/menu.svg" width="30px" height="30px">
+							<img src="/images/app/menu.svg" width="30px" height="30px" onclick="clickModal()">
 						</td>
 					</tr>
 				</tbody>

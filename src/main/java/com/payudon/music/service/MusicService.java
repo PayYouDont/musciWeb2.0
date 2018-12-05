@@ -5,14 +5,18 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.payudon.music.entity.AllData;
+import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData;
 import com.payudon.music.entity.SearchData;
+import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.util.UrlUtil;
 
 /**
@@ -49,6 +53,9 @@ public class MusicService {
 				+ "&callback=jsonp1&g_tk=5381&jsonpCallback=jsonp1&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
 	}
 
+	public String getHotListUrl(String disstid) {
+		return "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid="+disstid+"&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+	}
 	public MusicData getMusicData() {
 		String text = UrlUtil.getSongList(getSongListUrl());
 		JSONObject object = JSONObject.parseObject(text);
@@ -71,6 +78,26 @@ public class MusicService {
 		return bean;
 	}
 	
+	public HotSongData getHotSongData(String disstid) throws Exception{
+		String urlStr = getHotListUrl(disstid);
+		String text = UrlUtil.getHotList(urlStr,disstid).toString();
+		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		JSONObject object = JSONObject.parseObject(text);
+		HotSongData bean = object.toJavaObject(HotSongData.class);
+		return bean;
+	
+	}
+	public List<Songlist> getSonglist(HotSongData hotSongData) {
+		List<HotSongData.Songlist> hotSonglist = hotSongData.getCdlist().get(0).getSonglist();
+		List<Songlist> songList = new ArrayList<>();
+		for (HotSongData.Songlist hots : hotSonglist) {
+			MusicData.Data data = hots;
+			Songlist song = new Songlist();
+			song.setData(data);
+			songList.add(song);
+		}
+		return songList;
+	}
 	public StringBuffer getVkey(String urlStr) throws Exception {
 		return UrlUtil.getVkey(urlStr);
 	}

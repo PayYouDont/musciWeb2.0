@@ -8,9 +8,11 @@
 	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/layer/theme/default/layer.css">
 <link rel="stylesheet" type="text/css" href="/css/muisc/index_phone.css">
 <script type="text/javascript" src="/core/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/layer/layer.js"></script>
 <script type="text/javascript" src="/core/toucher.js"></script>
 <script type="text/javascript" src="/js/music/interface.js"></script>
 <script th:inline="javascript">
@@ -18,7 +20,7 @@
 	var hotList = [[${hotList}]];
 </script>
 <script type="text/javascript" src="/js/music/app/index_phone.js"></script>
-<title>手机端主页</title>
+<title>You - 音乐</title>
 </head>
 <body>
 	<div id="nav" style="height:57px">
@@ -81,9 +83,11 @@
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
 				<div th:each="hot,hotStat:${hotList}" 
-				th:attr="class=${hotStat.index}==0?'item active':'item'" >
-					<img th:src="${hot.cover}" style="width: 100%;height: 100%">
-					<div class="carousel-caption" th:text="${hot.title}">...</div>
+				th:attr="class=${hotStat.index}==0?'item active':'item'">
+					<a th:href="@{'../music/hotList?disstid='+${hot.content_id}}+'&index='+${hotStat.index}">
+						<img th:src="${hot.cover}" th:attr="disstid=${hot.content_id}" style="width: 100%;height: 100%">
+						<div class="carousel-caption" th:text="${hot.title}">...</div>
+					</a>
 				</div>
 			</div>
 			<!-- Controls -->
@@ -168,19 +172,19 @@
 		</div>
 	</div>
 	<div id="player">
-		<audio id="audio" songmid="" rowid=""></audio>
+		<audio id="audio" playid="" rowid=""></audio>
 		<div class="row" id="player_normal" >
 			<div class="col-xs-2" onclick="shellPlayer()">
 				<div id="player_icon">
-					<img id="singer_cover" src="" class="img-circle">
+					<img id="singer_cover" src="../images/app/note.svg" class="img-circle">
 				</div>
 			</div>
 			<div class="col-xs-5" onclick="shellPlayer()">
 				<div id="player_info" style="margin-top:5px;">
-	 				<span class="songname" id="player_songname"></span>
+	 				<span class="songname" id="player_songname">无歌曲播放</span>
 	 			</div>
 	 			<div>
-	 				<span class="singername" style="color:#fa92a7" id="player_singername"></span>
+	 				<span class="singername" style="color:#fa92a7" id="player_singername">播放列表为空</span>
 	 			</div>
 			</div>
 			<div class="col-xs-4 row player_func_icon">
@@ -191,23 +195,63 @@
 					<img id="next" src="/images/app/next.svg" >
 				</div>
 				<div class="col-xs-4">
-					<img id="menu" src="/images/app/menu.svg" >
+					<img id="menu" src="/images/app/menu.svg" data-toggle="modal" data-target=".bs-example-modal-sm">
 				</div>
 			</div>
 		</div>
 		<div id="player_super" onclick="shellPlayer()" style="display:none"></div>
 	</div>
-	<div class="row" id="helper" style="display:none;position:absolute;width:90px;margin-left: -25px;">
+	<div class="row" id="helper" >
 		<div class="col-xs-4 col-md-4">
 			<img alt="collect" src="/images/app/favorite2.svg" class="helper_icon">
 		</div>
 		<div class="col-xs-4 col-md-4">
 			<img alt="share" src="/images/app/share2.svg" class="helper_icon">
 		</div>
-		<div class="col-xs-4 col-md-4">
+		<div class="col-xs-4 col-md-4" onclick="addPlayList()">
 			<img alt="add" src="/images/app/add2.svg" class="helper_icon">
 		</div>
 	</div>
-
+	<!--  -->
+	<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+	  <div class="modal-dialog modal-sm" role="document">
+	    <div class="modal-content" id="list-dialog">
+	     	<table class="table play-list-table">
+	     		<thead>
+	     			<tr>
+	     				<td width="20px">
+	     					<img src="../images/app/order_play_1.svg">
+	     				</td>
+	     				<td id="table-count">
+	     					顺序播放(2首)
+	     				</td>
+	     				<td width="50px"></td>
+	     			</tr>
+	     		</thead>
+	     		<tbody id="songPlayListTbody">
+	     			<tr class="play-activ">
+	     				<td></td>
+	     				<td>
+	     					年少有为 - 李荣浩
+	     					<img src="../images/app/note.svg" style="margin-left:10px;">
+	     				</td>
+	     				<td>
+	     					<img src="../images/app/close.svg" style="width:15px;" onclick="removeToPlayList()">
+	     				</td>
+	     			</tr>
+	     		</tbody>
+	     		<tfoot>
+	     			<tr>
+	     				<td></td>
+		     			<td style="text-align: center;">
+		     				<span style="color:#d4ccd6;" onclick="clickModal()">关闭</span>
+		     			</td>
+		     			<td></td>
+	     			</tr>
+	     		</tfoot>
+	     	</table>
+	    </div>
+	  </div>
+	</div>
 </body>
 </html>
