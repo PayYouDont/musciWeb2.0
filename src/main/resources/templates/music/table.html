@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script type="text/javascript" src="/js/music/app/table.js"></script>
+	<script th:inline="javascript">
+	var songs = [[${songlist}]];
+</script>
+</head>	
+<body>
+	<div>
+		<table class="table">
+			<tr class="songs" th:each="songs,songStat:${songlist}"
+				th:attr="rowid=${songStat.index}">
+				<td width="20px;"></td>
+				<td style="height:57px;">
+					<div class="list_music_name">
+						<span class="songname" th:text="${songs.data.songname}"></span>
+					</div>
+					<div class="list_music_info"
+						style="font-family: cursive; font-size: 10px;">
+						<a style="color: #615d71" th:text="${songs.data.singer[0].name}"
+							th:attr="mid=${songs.data.singer[0].mid}"></a>
+					</div>
+				</td>
+				<td width="80px"></td>
+				<td width="50px">
+					<div class="more" style="float: right; padding-top: 15px;">
+						<span class="glyphicon glyphicon-option-horizontal"></span>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

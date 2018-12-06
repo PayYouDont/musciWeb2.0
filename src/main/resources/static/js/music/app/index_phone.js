@@ -7,7 +7,7 @@ app.songList = new Array();
 app.currentSong;
 app.playid
 $(function(){
-	app.currentSong = songs[0];
+	$("#music_list_table").load("../music/table");
 	$('#myModal').on('show.bs.modal', function () {
 		$(this).css({
 			"top":"auto",
@@ -36,32 +36,6 @@ $(function(){
 	}).on('swipeRight', function(e) {
 		$('#carleft').click();
 	});
-	//歌曲列表绑定点击事件
-	$(".songs").on("click",function(){
-		var rowid = $(this).attr("rowid");
-		var song = songs[rowid];
-		song.rowid = rowid;
-		var playid = app.addPlayList(song);
-		$("#audio").attr("playid",playid);
-		app.currentSong = song;
-		setPlayer(song);
-		app.play();
-	});
-	//分享添加功能绑定点击事件
-	$(".more").off("click").on("click",function(e){
-		var $td = $(this).parent().prev();
-		var rowid = $(this).parent().parent().attr("rowid");
-		$("#helper").attr("rowid",rowid);
-		var left = $td.offset().left;
-		var top = $td.offset().top+22;
-		var h_top = $("#helper").offset().top;
-		if(h_top!=top){
-			$("#helper").hide();
-		}
-		$("#helper").css({"left":left,"top":top}).fadeToggle(500);
-		hideElement("more","helper");
-		e.stopPropagation();
-	});
 	//播放功能绑定点击事件
 	$("#play").off("click").on("click",function(){
 		if(app.songList.length==0){
@@ -74,6 +48,7 @@ $(function(){
 	$("#next").off("click").on("click",function(){
 		if(app.songList.length>0){
 			var playid = app.getNextSongId();
+			console.log(playid)
 			var song = app.songList[playid];
 			$("#audio").attr("playid",playid);
 			cutSong(song);
@@ -157,22 +132,6 @@ app.getNextSongId = function(){
 	}
 	return playid;
 }
-function addPlayList(){
-	var $helper = $("#helper");
-	//添加到播放列表
-	if($helper.is(":hidden")){
-		return
-	}
-	var rowid = $helper.attr("rowid");
-	var song = songs[rowid];
-	var result = app.addPlayList(song);
-	$helper.hide();
-	if(result){
-		layer.msg('已放入播放列表');
-	}else{
-		layer.msg('该歌曲已在播放列表中');
-	}
-}
 function removeToPlayList(img){
 	var index = $(img).attr("index");
 	var playid = $("#audio").attr("playid");
@@ -182,16 +141,7 @@ function removeToPlayList(img){
 		$("#next").click();
 	}
 }
-//添加至播放列表
-app.addPlayList = function(song){
-	for(var i in app.songList){
-		if(app.songList[i].data.songid==song.data.songid){//如果已经存在
-			return i;
-		}
-	}
-	app.songList.push(song);
-	return app.songList.length-1;
-}
+
 //点击菜单
 function clickModal(){
 	$('#menu').click();
@@ -202,7 +152,7 @@ function search(){
 	if (searchText.trim() == "") {
 		return;
 	}
-	window.location.href = "/music/search?w="+searchText;
+	$("#music_list_table").load("/music/search?w="+searchText);
 }
 //切歌
 function cutSong(song){
@@ -307,15 +257,21 @@ function getVkey(mid){
 	})
 	return vkey;
 }
+function toHotList(img){
+	var disstid = $(img).attr("disstid");
+	var index = $(img).attr("index");
+	var url = "../music/hotList?disstid="+disstid+"&index="+index;
+	$("#music_list_table").load(url);
+}
 function shellPlayer(){
 	var height = $("#player").height();
-	var rowid = $("#audio").attr("rowid");
-	if(rowid!=""&&height==50){
+	var playid = $("#audio").attr("playid");
+	if(playid!=""&&height==50){
 		$("#player").animate({"height":"100%"},function(){
 			$("#player_normal").hide();
 			$("#player_super").show();
-			var row = songs[rowid];
-			var songid = row.data.songid;
+			var song = app.songList[playid];
+			var songid = song.data.songid;
 			var isplay = $("#play").attr("isplay");
 			var playerUrl = "../music/player?songid="+songid+"&isplay="+isplay;
 			$("#player_super").load(playerUrl);

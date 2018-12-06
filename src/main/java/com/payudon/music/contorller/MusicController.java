@@ -91,19 +91,24 @@ public class MusicController extends BaseController{
 	 * @date 2018年11月28日 下午3:25:02
 	 */
 	@GetMapping("index_phone")
-	public ModelAndView indexPhone(Model model,Integer id,Integer pageIndex) {
+	public ModelAndView indexPhone(Model model,Integer id) {
 		User user = new User();
 		if(id!=null) {
 			user = userService.findById(id);
 		}
-		List<Songlist> songlist = service.getMusicData().getSonglist();
+		//List<Songlist> songlist = service.getMusicData().getSonglist();
 		ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
 		model.addAttribute("user", user);
-		model.addAttribute("songlist",songlist);
+		//model.addAttribute("songlist",songlist);
 		model.addAttribute("hotList",hotList);
 		return new ModelAndView("music/index_phone");
 	}
-	
+	@GetMapping("table")
+	public ModelAndView table(Model model) {
+		List<Songlist> songlist = service.getMusicData().getSonglist();
+		model.addAttribute("songlist",songlist);
+		return new ModelAndView("music/table");
+	}
 	@GetMapping("hotList")
 	public ModelAndView hotList(Model model,String disstid,Integer index) {
 		try {
@@ -113,11 +118,10 @@ public class MusicController extends BaseController{
 			ArrayList<V_hot> hotListOne = new ArrayList<>();
 			hotListOne.add(hotList.get(index));
 			model.addAttribute("songlist",songlist);
-			model.addAttribute("hotList",hotListOne);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
-		return new ModelAndView("music/index_phone");
+		return new ModelAndView("music/table");
 	}
 	@GetMapping("list")
 	public HashMap<String,Object> list(){
@@ -170,13 +174,11 @@ public class MusicController extends BaseController{
 		try {
 			SearchData searchData = service.getSearchData(w);
 			List<Songlist> songlist = ParseUtil.parseSonglist(searchData);
-			ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
 			model.addAttribute("songlist",songlist);
-			model.addAttribute("hotList",hotList);
 		} catch (Exception e) {
 			logger.error("搜索error",e);
 		}
-		return new ModelAndView("music/index_phone");
+		return new ModelAndView("music/table");
 	}
 	@PostMapping("getVkey")
 	public HashMap<String, Object> getVkey(String songmid) {

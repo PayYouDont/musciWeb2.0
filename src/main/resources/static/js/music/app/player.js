@@ -17,16 +17,6 @@ var a = $(function(){
 	app.init();
 	
 });
-/**
- * var song = app.getCurrentSong();
-	$(".lyr_title h1").text(song.data.songname);
-	$("#top_song_title").text(song.data.songname);
-	var singer = "";
-	for(i in song.data.singer){
-		singer += ","+song.data.singer[i].name;
-	}
-	$("#top_song_singer").text(singer.substring(1));
- */
 //初始化
 app.init = function(){
 	//播放功能绑定点击事件
@@ -41,12 +31,10 @@ app.init = function(){
 	});
 	//下一曲
 	$("#lyr_next").off("click").on("click",function(){
+		$("#next").click();
 		var songid = app.currentSong.data.songid;
 		var playerUrl = "../music/player?songid="+songid;
-		$("#player_super").load(playerUrl,function(){
-			console.log(a)
-		});
-		$("#next").click();
+		$("#player_super").load(playerUrl);
 	});
 	//上一曲
 	$("#lyr_pause").off("click").on("click",function(){
@@ -86,15 +74,15 @@ app.init = function(){
 }
 //更改背景
 function changeBG(){
-	var rowid = $("#audio").attr("rowid");
-	var row = songs[rowid];
-	var albummid = row.data.albummid;
+	var playid = $("#audio").attr("playid");
+	var song = app.songList[playid];
+	var albummid = song.data.albummid;
 	var imgUrl = getCover(albummid);
 	$("#lyr_bg").css({"background-image":"url("+imgUrl+")"});
 	$("#player").css("background-color","#fff");
-	var songname = row.data.songname;
+	var songname = song.data.songname;
 	$(".lyr_title h1,#top_song_title").text(songname);
-	var singername = row.data.singer[0].name;
+	var singername = song.data.singer[0].name;
 	$("#top_song_singer").text(singername);
 	var imgurl = "/images/app/order_play_"+app.order+".svg";
 	$("#lyr_order").attr("order",app.order)
@@ -130,12 +118,6 @@ app.timePointTouch = function() {
 		}
 		audio.currentTime = time;
 	});
-}
-
-app.getCurrentSong = function(){
-	var rowid = $("#audio").attr("rowid");
-	app.currentRowid = rowid;
-	return songs[rowid];
 }
 app.tiomePointRun = function(){
 	var param = this.playerParam;

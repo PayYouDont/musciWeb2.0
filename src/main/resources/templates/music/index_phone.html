@@ -16,8 +16,8 @@
 <script type="text/javascript" src="/core/toucher.js"></script>
 <script type="text/javascript" src="/js/music/interface.js"></script>
 <script th:inline="javascript">
-	var songs = [[${songlist}]];
-	var hotList = [[${hotList}]];
+	//var songs = [[${songlist}]];
+	//var hotList = [[${hotList}]];
 </script>
 <script type="text/javascript" src="/js/music/app/index_phone.js"></script>
 <title>You - 音乐</title>
@@ -84,10 +84,13 @@
 			<div class="carousel-inner" role="listbox">
 				<div th:each="hot,hotStat:${hotList}" 
 				th:attr="class=${hotStat.index}==0?'item active':'item'">
-					<a th:href="@{'../music/hotList?disstid='+${hot.content_id}}+'&index='+${hotStat.index}">
-						<img th:src="${hot.cover}" th:attr="disstid=${hot.content_id}" style="width: 100%;height: 100%">
-						<div class="carousel-caption" th:text="${hot.title}">...</div>
-					</a>
+					<!-- <a th:href="@{'../music/hotList?disstid='+${hot.content_id}}+'&index='+${hotStat.index}">
+						
+					</a> -->
+					<img th:src="${hot.cover}" 
+						 th:attr="disstid=${hot.content_id},index=${hotStat.index}"
+						 onclick="toHotList(this)" style="width: 100%;height: 100%">
+					<div class="carousel-caption" th:text="${hot.title}"></div>
 				</div>
 			</div>
 			<!-- Controls -->
@@ -147,30 +150,7 @@
 		  </div>
 		</div>
 	</div>
-	<div id="music_list_table">
-		<div>
-			<table class="table">
-			 	<tr class="songs" th:each="songs,songStat:${songlist}" th:attr="rowid=${songStat.index}">
-			 		<td width="20px;">
-			 		</td>
-			 		<td style="height:57px">
-			 			<div class="list_music_name">
-			 				<span class="songname" th:text="${songs.data.songname}"></span>
-			 			</div>
-			 			<div class="list_music_info" style="font-family:cursive;font-size:10px;">
-			 				<a style="color:#615d71" th:text="${songs.data.singer[0].name}" th:attr="mid=${songs.data.singer[0].mid}"></a>
-			 			</div>
-			 		</td>
-			 		<td width="80px"></td>
-			 		<td width="50px" >
-			 			<div  class="more" style="float:right;padding-top: 15px;">
-			 				<span class="glyphicon glyphicon-option-horizontal"></span>
-			 			</div>
-			 		</td>
-			 	</tr>
-			</table>
-		</div>
-	</div>
+	<div id="music_list_table"></div>
 	<div id="player">
 		<audio id="audio" playid="" rowid=""></audio>
 		<div class="row" id="player_normal" >
@@ -222,9 +202,7 @@
 	     				<td width="20px">
 	     					<img src="../images/app/order_play_1.svg">
 	     				</td>
-	     				<td id="table-count">
-	     					顺序播放(2首)
-	     				</td>
+	     				<td id="table-count"></td>
 	     				<td width="50px"></td>
 	     			</tr>
 	     		</thead>
@@ -232,7 +210,6 @@
 	     			<tr class="play-activ">
 	     				<td></td>
 	     				<td>
-	     					年少有为 - 李荣浩
 	     					<img src="../images/app/note.svg" style="margin-left:10px;">
 	     				</td>
 	     				<td>
