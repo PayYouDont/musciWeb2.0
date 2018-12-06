@@ -85,7 +85,6 @@
 				<div th:each="hot,hotStat:${hotList}" 
 				th:attr="class=${hotStat.index}==0?'item active':'item'">
 					<!-- <a th:href="@{'../music/hotList?disstid='+${hot.content_id}}+'&index='+${hotStat.index}">
-						
 					</a> -->
 					<img th:src="${hot.cover}" 
 						 th:attr="disstid=${hot.content_id},index=${hotStat.index}"
@@ -203,32 +202,18 @@
 	     					<img src="../images/app/order_play_1.svg">
 	     				</td>
 	     				<td id="table-count"></td>
-	     				<td width="50px"></td>
+	     				<td width="100px" onclick="addAll()">
+	     					播放当前列表
+	     				</td>
 	     			</tr>
 	     		</thead>
-	     		<tbody id="songPlayListTbody">
-	     			<tr class="play-activ">
-	     				<td></td>
-	     				<td>
-	     					<img src="../images/app/note.svg" style="margin-left:10px;">
-	     				</td>
-	     				<td>
-	     					<img src="../images/app/close.svg" style="width:15px;" onclick="removeToPlayList()">
-	     				</td>
-	     			</tr>
-	     		</tbody>
-	     		<tfoot>
-	     			<tr>
-	     				<td></td>
-		     			<td style="text-align: center;">
-		     				<span style="color:#d4ccd6;" onclick="clickModal()">关闭</span>
-		     			</td>
-		     			<td></td>
-	     			</tr>
-	     		</tfoot>
+	     		<tbody id="songPlayListTbody"></tbody>
 	     	</table>
 	    </div>
 	  </div>
+	  <div id="table-close">
+	     	<span style="color:#d4ccd6;" onclick="clickModal()">关闭</span>
+	    </div>
 	</div>
 </body>
 </html>

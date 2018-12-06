@@ -48,7 +48,6 @@ $(function(){
 	$("#next").off("click").on("click",function(){
 		if(app.songList.length>0){
 			var playid = app.getNextSongId();
-			console.log(playid)
 			var song = app.songList[playid];
 			$("#audio").attr("playid",playid);
 			cutSong(song);
@@ -67,6 +66,20 @@ $(function(){
 		initPlayListTab();
 	});
 })
+function addAll(){
+	for(i in songs){
+		songs[i].rowid = i;
+	}
+	app.songList = app.songList.concat(songs);
+	if(!app.currentSong){
+		app.currentSong = app.songList[0];
+		$("#audio").attr("playid",0);
+		setPlayer(app.currentSong);
+		app.play();
+	}
+	initPlayListTab();
+	
+}
 //初始化播放列表
 function initPlayListTab(){
 	var orderText = "顺序播放";
@@ -96,10 +109,11 @@ function initPlayListTab(){
 				'<td>'+songname+' - '+singername+img+
 					'</td>'+
 					'<td>'+
-					'	<img index="'+i+'" src="../images/app/close.svg" width="15px" onclick="removeToPlayList(this)">'+
+					'	<img index="'+i+'" src="../images/app/close.svg" style="width:25px" onclick="removeToPlayList(this)">'+
 					'</td></tr>';
 	}
 	$("#songPlayListTbody").html(html);
+	$("#songPlayListTbody td").css("border",0)
 }
 app.getPrevSongId = function(){
 	if(this.songList.length==0){
@@ -188,7 +202,7 @@ function setPlayer(song){
 		$("#singer_cover").attr("src",imgUrl);
 		$("title").text("You - 音乐");
 		isPlay(false);
-		audio.paused?audio.play():audio.pause();
+		audio.pause();
 	}
 }
 //获取歌曲的相关信息并播放

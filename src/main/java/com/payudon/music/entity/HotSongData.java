@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /** 
 * @ClassName: HotData 
-* @Description: TODO(     ) 
+* @Description: TODO(热门音乐(轮播图片)歌单数据) 
 * @author peiyongdong
 * @date 2018年12月4日 上午10:14:38 
 *  

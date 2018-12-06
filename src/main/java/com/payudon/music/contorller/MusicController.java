@@ -96,10 +96,8 @@ public class MusicController extends BaseController{
 		if(id!=null) {
 			user = userService.findById(id);
 		}
-		//List<Songlist> songlist = service.getMusicData().getSonglist();
 		ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
 		model.addAttribute("user", user);
-		//model.addAttribute("songlist",songlist);
 		model.addAttribute("hotList",hotList);
 		return new ModelAndView("music/index_phone");
 	}
@@ -114,10 +112,16 @@ public class MusicController extends BaseController{
 		try {
 			HotSongData hotSongData = service.getHotSongData(disstid);
 			List<Songlist> songlist = service.getSonglist(hotSongData);
-			ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
-			ArrayList<V_hot> hotListOne = new ArrayList<>();
-			hotListOne.add(hotList.get(index));
 			model.addAttribute("songlist",songlist);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+		}
+		return new ModelAndView("music/table");
+	}
+	@GetMapping("classicalList")
+	public ModelAndView classicalList(Model model) {
+		try {
+			
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
