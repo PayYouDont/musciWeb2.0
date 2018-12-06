@@ -15,10 +15,6 @@
 <script type="text/javascript" src="/layer/layer.js"></script>
 <script type="text/javascript" src="/core/toucher.js"></script>
 <script type="text/javascript" src="/js/music/interface.js"></script>
-<script th:inline="javascript">
-	//var songs = [[${songlist}]];
-	//var hotList = [[${hotList}]];
-</script>
 <script type="text/javascript" src="/js/music/app/index_phone.js"></script>
 <title>You - 音乐</title>
 </head>
@@ -74,7 +70,7 @@
 		</nav>
 	</div>
 	<div id="slide-image" class="div_main">
-		<div id="carousel" class="carousel slide both" data-ride="carousel" data-interval="2000">
+		<div id="carousel" class="carousel slide both" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" th:each="hot,hotStat:${hotList}"
@@ -105,6 +101,7 @@
 			</a>
 		</div>
 	</div>
+	<!-- 曲风 -->
 	<div id="music_style" class="div_main">
 		<div class="row">
 		  <div class="col-xs-3 col-md-3">
@@ -118,7 +115,7 @@
 		  	</div>
 		  </div>
 		  <div class="col-xs-3 col-md-3">
-		  	<div class="music_style_margin">
+		  	<div class="music_style_margin" onclick="toClassical()">
 		  		<div style="margin-left: 2.5px">
 		  			<img src="/images/app/classical.svg" class="music_style_img">
 		  		</div>
@@ -149,6 +146,7 @@
 		  </div>
 		</div>
 	</div>
+	<!-- 歌曲列表 -->
 	<div id="music_list_table"></div>
 	<div id="player">
 		<audio id="audio" playid="" rowid=""></audio>
@@ -180,6 +178,7 @@
 		</div>
 		<div id="player_super" onclick="shellPlayer()" style="display:none"></div>
 	</div>
+	<!-- 分享、添加、收藏 -->
 	<div class="row" id="helper" >
 		<div class="col-xs-4 col-md-4">
 			<img alt="collect" src="/images/app/favorite2.svg" class="helper_icon">
@@ -191,7 +190,7 @@
 			<img alt="add" src="/images/app/add2.svg" class="helper_icon">
 		</div>
 	</div>
-	<!--  -->
+	<!-- 播放列表 -->
 	<div class="modal fade bs-example-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
 	  <div class="modal-dialog modal-sm" role="document">
 	    <div class="modal-content" id="list-dialog">

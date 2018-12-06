@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.payudon.music.entity.AllData;
+import com.payudon.music.entity.ClassicalData;
 import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData;
-import com.payudon.music.entity.SearchData;
 import com.payudon.music.entity.MusicData.Songlist;
+import com.payudon.music.entity.SearchData;
 import com.payudon.util.UrlUtil;
 
 /**
@@ -56,6 +57,10 @@ public class MusicService {
 	public String getHotListUrl(String disstid) {
 		return "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid="+disstid+"&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
 	}
+	public String getClassicalDataUrl() {
+		return 	"https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.21697651721256328&g_tk=5381&jsonpCallback=getPlaylist&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=27&sortId=5&sin=0&ein=29";
+
+	}
 	public MusicData getMusicData() {
 		String text = UrlUtil.getSongList(getSongListUrl());
 		JSONObject object = JSONObject.parseObject(text);
@@ -87,6 +92,16 @@ public class MusicService {
 		return bean;
 	
 	}
+	
+	public ClassicalData getClassicalData() throws Exception{
+		String urlStr = getClassicalDataUrl();
+		String text = UrlUtil.getClassicalList(urlStr).toString();
+		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		JSONObject object = JSONObject.parseObject(text);
+		ClassicalData bean = object.toJavaObject(ClassicalData.class);
+		return bean;
+	}
+	
 	public List<Songlist> getSonglist(HotSongData hotSongData) {
 		List<HotSongData.Songlist> hotSonglist = hotSongData.getCdlist().get(0).getSonglist();
 		List<Songlist> songList = new ArrayList<>();
@@ -98,6 +113,7 @@ public class MusicService {
 		}
 		return songList;
 	}
+	
 	public StringBuffer getVkey(String urlStr) throws Exception {
 		return UrlUtil.getVkey(urlStr);
 	}

@@ -292,3 +292,7 @@ function shellPlayer(){
 		});
 	}
 }
+//古典音乐
+function toClassical(){
+	$("#music_list_table").load("../music/classicalList");
+}

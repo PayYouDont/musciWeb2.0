@@ -1,0 +1,21 @@
+.muisc-style{
+	width:50%;
+	height:50vw;
+	float: left;
+}
+.music-style-main{
+	padding-top: 8px;
+	text-align: center;
+}
+.music-style-main img{
+	width:47vw;
+	height:40vw
+}
+.music-style-main p{
+	margin-top: 5px;
+	color:#f9f7f9;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+	width:90%;
+}

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.payudon.common.base.controller.BaseController;
 import com.payudon.common.entity.Page;
 import com.payudon.music.entity.AllData.V_hot;
+import com.payudon.music.entity.ClassicalData;
 import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.SearchData;
@@ -121,11 +122,12 @@ public class MusicController extends BaseController{
 	@GetMapping("classicalList")
 	public ModelAndView classicalList(Model model) {
 		try {
-			
+			 ClassicalData data = service.getClassicalData();
+			 model.addAttribute("songData",data);
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 		}
-		return new ModelAndView("music/table");
+		return new ModelAndView("music/musicStyleTab");
 	}
 	@GetMapping("list")
 	public HashMap<String,Object> list(){

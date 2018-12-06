@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" type="text/css" href="/css/muisc/musicStyleTab.css">
+<script type="text/javascript" src="/js/music/app/musicStyleTab.js"></script>
+<script th:inline="javascript">
+	var songData = [[${songData}]];
+	console.log(songData);
+</script>
+</head>	
+<body>
+	<div class="table">
+		<div class="songs muisc-style" th:each="song,songStat:${songData.data.list}">
+			<div class="music-style-main">
+				<img th:src="${song.imgurl}">
+				<p th:text="${song.dissname}"></p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
