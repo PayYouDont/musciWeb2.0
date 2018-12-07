@@ -157,7 +157,7 @@ public class MusicController extends BaseController{
 			AllData allData = service.getAllData();
 			ArrayList<V_hot> v_hot = allData.getRecomPlaylist().getData().getV_hot();
 			model.addAttribute("songData",v_hot);
-			return new ModelAndView("music/FMTab");
+			return new ModelAndView("music/recomTab");
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return new ModelAndView("music/error");
