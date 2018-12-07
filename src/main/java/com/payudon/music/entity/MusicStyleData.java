@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * 
  */
 @lombok.Data
-public class ClassicalData {
+public class MusicStyleData {
 
 	private int code;
 	private int subcode;

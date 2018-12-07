@@ -7,6 +7,9 @@ import java.util.List;
 import com.payudon.music.entity.MusicData.Data;
 import com.payudon.music.entity.MusicData.Singer;
 import com.payudon.music.entity.MusicData.Songlist;
+import com.payudon.music.entity.RadioData;
+import com.payudon.music.entity.RadioData.Track_list;
+import com.payudon.music.entity.RecommendData;
 import com.payudon.music.entity.SearchData;
 
 /** 
@@ -30,12 +33,8 @@ public class ParseUtil {
 			String songname = list.getName();
 			ArrayList<Singer> singers = new ArrayList<>();
 			List<SearchData.Singer> searchSingers = list.getSinger();
-			for (SearchData.Singer searchSinger: searchSingers) {
-				Singer singer = new Singer();
-				singer.setId(searchSinger.getId());
-				singer.setMid(searchSinger.getMid());
-				singer.setName(searchSinger.getName());
-				singers.add(singer);
+			for (Singer searchSinger: searchSingers) {
+				singers.add(searchSinger);
 			}
 			Songlist song = new Songlist();
 			Data data = new Data();
@@ -47,6 +46,45 @@ public class ParseUtil {
 			data.setSongname(songname);
 			data.setSinger(singers);
 			song.setData(data);
+			songs.add(song);
+		}
+		return songs;
+	}
+	public static List<Songlist> parseSonglist(RadioData radioData) {
+		List<Songlist> songs = new ArrayList<>();
+		ArrayList<Track_list> track_list = radioData.getSonglist().getData().getTrack_list();
+		for (Track_list list : track_list) {
+			String albummid = list.getAlbum().getMid();
+			String albumname = list.getAlbum().getName();
+			Integer albumid = list.getAlbum().getId();
+			Integer songid = list.getId();
+			String songmid = list.getMid();
+			String songname = list.getName();
+			ArrayList<Singer> singers = new ArrayList<>();
+			List<RadioData.Singer> radioSingers = list.getSinger();
+			for (Singer radioSinger: radioSingers) {
+				singers.add(radioSinger);
+			}
+			Songlist song = new Songlist();
+			Data data = new Data();
+			data.setAlbumid(albumid);
+			data.setAlbummid(albummid);
+			data.setAlbumname(albumname);
+			data.setSongid(songid);
+			data.setSongmid(songmid);
+			data.setSongname(songname);
+			data.setSinger(singers);
+			song.setData(data);
+			songs.add(song);
+		}
+		return songs;
+	}
+	public static List<Songlist> parseSonglist(RecommendData recommendData) {
+		List<Songlist> songs = new ArrayList<>();
+		ArrayList<RecommendData.List> recommendList = recommendData.getData().getList();
+		for (RecommendData.List list : recommendList) {
+			Songlist song = new Songlist();
+			song.setData(list);
 			songs.add(song);
 		}
 		return songs;

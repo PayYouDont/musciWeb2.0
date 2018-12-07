@@ -4,6 +4,7 @@ package com.payudon.music.entity;
 import java.util.ArrayList;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName: SearchList
@@ -108,10 +109,8 @@ public class SearchData {
 	}
 
 	@lombok.Data
-	public static class Singer {
-		private int id;
-		private String mid;
-		private String name;
+	@EqualsAndHashCode(callSuper=false)
+	public static class Singer extends MusicData.Singer{
 		private String title;
 		private String title_hilight;
 		private int type;

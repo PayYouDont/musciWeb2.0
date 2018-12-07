@@ -37,10 +37,9 @@ public class UrlUtil {
 	}
 	public static String getSearchList(String urlStr) throws Exception {
 		StringBuffer sb = connection(urlStr, null);
-		return sb.substring(18,sb.length()-1);
+		return sb.substring(sb.indexOf("(")+1,sb.indexOf(")"));
 	}
 	public static StringBuffer getVkey(String urlStr) throws Exception {
-	
 		String referer = "https://y.qq.com/portal/player.html";
 		return connection(urlStr, referer);
 	}
@@ -77,16 +76,17 @@ public class UrlUtil {
 		in.close();
 		return sb;
 	}
-	/*public static String getHotListUrl(String disstid) {
-		return "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid="+disstid+"&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+	/*public static String getAlbumData(String albumId) {
+		return "https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg?albummid="+albumId+"&g_tk=5381&jsonpCallback=albuminfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
 	}
 	public static void main(String[] args) throws Exception {
-		String urlStr = "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd=0.21697651721256328&g_tk=5381&jsonpCallback=getPlaylist&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=27&sortId=5&sin=0&ein=29";
-		StringBuffer sb = getClassicalList(urlStr);
-		String text = sb.toString();
-		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		String albummid = "002FVfzB0jzfKi";
+		String urlStr = getAlbumData(albummid);
+		String text = getSongList(urlStr);
+		System.out.println(text);
 		JSONObject object = JSONObject.parseObject(text);
-		ClassicalData bean = object.toJavaObject(ClassicalData.class);
-		System.out.println(bean);
+		RecommendData bean = object.toJavaObject(RecommendData.class);
+		List<Songlist> list = ParseUtil.parseSonglist(bean);
+		System.out.println(list);
 	}*/
 }

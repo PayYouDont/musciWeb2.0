@@ -20,10 +20,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.payudon.common.base.controller.BaseController;
 import com.payudon.common.entity.Page;
+import com.payudon.music.entity.AllData;
+import com.payudon.music.entity.AllData.Content;
 import com.payudon.music.entity.AllData.V_hot;
-import com.payudon.music.entity.ClassicalData;
 import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData.Songlist;
+import com.payudon.music.entity.MusicStyleData;
+import com.payudon.music.entity.RadioData;
+import com.payudon.music.entity.RecommendData;
 import com.payudon.music.entity.SearchData;
 import com.payudon.music.service.MusicService;
 import com.payudon.user.entity.User;
@@ -97,37 +101,103 @@ public class MusicController extends BaseController{
 		if(id!=null) {
 			user = userService.findById(id);
 		}
-		ArrayList<V_hot> hotList = service.getAllData().getRecomPlaylist().getData().getV_hot();
+		ArrayList<Content> focusList = service.getAllData().getFocus().getData().getContent();
 		model.addAttribute("user", user);
-		model.addAttribute("hotList",hotList);
+		model.addAttribute("focusList",focusList);
 		return new ModelAndView("music/index_phone");
 	}
-	@GetMapping("table")
-	public ModelAndView table(Model model) {
+	//推荐
+	@GetMapping("topList")
+	public ModelAndView topList(Model model) {
 		List<Songlist> songlist = service.getMusicData().getSonglist();
 		model.addAttribute("songlist",songlist);
 		return new ModelAndView("music/table");
 	}
+	//流行
+	@GetMapping("popularList")
+	public ModelAndView popularList(Model model) {
+		try {
+			MusicStyleData data = service.getPopularData();
+			model.addAttribute("songData",data);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+		return new ModelAndView("music/musicStyleTab");
+	}
+	//古典
+	@GetMapping("classicalList")
+	public ModelAndView classicalList(Model model) {
+		try {
+			MusicStyleData data = service.getClassicalData();
+			model.addAttribute("songData",data);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+		return new ModelAndView("music/musicStyleTab");
+	}
+	//纯音乐
+	@GetMapping("pureList")
+	public ModelAndView pureList(Model model) {
+		try {
+			MusicStyleData data = service.getPureData();
+			model.addAttribute("songData",data);
+			return new ModelAndView("music/musicStyleTab");
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+	}
+	@GetMapping("recommendList")
+	public ModelAndView recommendList(Model model) {
+		try {
+			AllData allData = service.getAllData();
+			ArrayList<V_hot> v_hot = allData.getRecomPlaylist().getData().getV_hot();
+			model.addAttribute("songData",v_hot);
+			return new ModelAndView("music/recomTab");
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+	}
+	//电台内容列表
+	@GetMapping("radioList")
+	public ModelAndView radioList(Model model,Integer radioid) {
+		try {
+			RadioData radioData = service.getRadioData(radioid);
+			List<Songlist> songlist = ParseUtil.parseSonglist(radioData);
+			model.addAttribute("songlist",songlist);
+			return new ModelAndView("music/table");
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+	}
+	//热歌列表
 	@GetMapping("hotList")
-	public ModelAndView hotList(Model model,String disstid,Integer index) {
+	public ModelAndView hotList(Model model,String disstid) {
 		try {
 			HotSongData hotSongData = service.getHotSongData(disstid);
 			List<Songlist> songlist = service.getSonglist(hotSongData);
 			model.addAttribute("songlist",songlist);
+			return new ModelAndView("music/table");
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
 		}
-		return new ModelAndView("music/table");
 	}
-	@GetMapping("classicalList")
-	public ModelAndView classicalList(Model model) {
+	@GetMapping("albumList")
+	public ModelAndView albumList(Model model,String albummid) {
 		try {
-			 ClassicalData data = service.getClassicalData();
-			 model.addAttribute("songData",data);
+			RecommendData recommendData = service.getRecommendData(albummid);
+			List<Songlist> songlist = ParseUtil.parseSonglist(recommendData);
+			model.addAttribute("songlist",songlist);
+			return new ModelAndView("music/table");
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
 		}
-		return new ModelAndView("music/musicStyleTab");
 	}
 	@GetMapping("list")
 	public HashMap<String,Object> list(){
@@ -181,10 +251,12 @@ public class MusicController extends BaseController{
 			SearchData searchData = service.getSearchData(w);
 			List<Songlist> songlist = ParseUtil.parseSonglist(searchData);
 			model.addAttribute("songlist",songlist);
+
+			return new ModelAndView("music/table");
 		} catch (Exception e) {
 			logger.error("搜索error",e);
+			return new ModelAndView("music/error");
 		}
-		return new ModelAndView("music/table");
 	}
 	@PostMapping("getVkey")
 	public HashMap<String, Object> getVkey(String songmid) {

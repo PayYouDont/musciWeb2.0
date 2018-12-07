@@ -26,14 +26,14 @@
 					<button type="button" class="navbar-toggle collapsed"
 						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
 						aria-expanded="false" style="float:left">
-						<span class="sr-only"></span> 
+						<span class="sr-only" ></span> 
 						<span class="icon-bar"></span> 
 						<span class="icon-bar"></span> 
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="#">推荐</a> 
-					<a class="navbar-brand" href="#">排行榜</a> 
-					<a class="navbar-brand" href="#">我的</a>
+					<a class="navbar-brand">推荐</a> 
+					<a class="navbar-brand" style="color: #f9f7f9;background-color: #fe0041;">排行榜</a> 
+					<a class="navbar-brand">我的</a>
 					<button type="button" class="navbar-toggle collapsed"
 						data-toggle="collapse" data-target="#bs-example-navbar-collapse-2"
 						aria-expanded="false">
@@ -73,19 +73,17 @@
 		<div id="carousel" class="carousel slide both" data-ride="carousel">
 			<!-- Indicators -->
 			<ol class="carousel-indicators">
-				<li data-target="#myCarousel" th:each="hot,hotStat:${hotList}"
-				th:attr="data-slide-to=${hotStat.index},class=${hotStat.index}==0?active"></li>
+				<li data-target="#myCarousel" th:each="focus,focusStat:${focusList}" 
+				th:attr="data-slide-to=${focusStat.index},class=${focusStat.index}==0?active"></li>
 			</ol>
 			<!-- Wrapper for slides -->
 			<div class="carousel-inner" role="listbox">
-				<div th:each="hot,hotStat:${hotList}" 
-				th:attr="class=${hotStat.index}==0?'item active':'item'">
-					<!-- <a th:href="@{'../music/hotList?disstid='+${hot.content_id}}+'&index='+${hotStat.index}">
-					</a> -->
-					<img th:src="${hot.cover}" 
-						 th:attr="disstid=${hot.content_id},index=${hotStat.index}"
+				<div th:each="focus,focusStat:${focusList}" 
+				th:attr="class=${focusStat.index}==0?'item active':'item'">
+					<img th:src="${focus.pic_info.url}" 
+						 th:attr="focusurl=${focus.jump_info.url}"
 						 onclick="toHotList(this)" style="width: 100%;height: 100%">
-					<div class="carousel-caption" th:text="${hot.title}"></div>
+					<div class="carousel-caption" th:text="${focus.sub_title}"></div>
 				</div>
 			</div>
 			<!-- Controls -->
@@ -105,7 +103,7 @@
 	<div id="music_style" class="div_main">
 		<div class="row">
 		  <div class="col-xs-3 col-md-3">
-		  	<div class="music_style_margin">
+		  	<div class="music_style_margin" musicStyle="popular">
 		  		<div style="margin-left: 2.5px">
 		  			<img src="/images/app/popular.svg" class="music_style_img">
 		  		</div>
@@ -115,7 +113,7 @@
 		  	</div>
 		  </div>
 		  <div class="col-xs-3 col-md-3">
-		  	<div class="music_style_margin" onclick="toClassical()">
+		  	<div class="music_style_margin" musicStyle="classical">
 		  		<div style="margin-left: 2.5px">
 		  			<img src="/images/app/classical.svg" class="music_style_img">
 		  		</div>
@@ -125,7 +123,7 @@
 		  	</div>
 		  </div>
 		  <div class="col-xs-3 col-md-3">
-		  	<div class="music_style_margin">
+		  	<div class="music_style_margin" musicStyle="pure">
 		  		<div style="margin-left: 7.5px">
 		  			<img src="/images/app/cd.svg" class="music_style_img">
 		  		</div>
@@ -135,7 +133,7 @@
 		  	</div>
 		  </div>
 		  <div class="col-xs-3 col-md-3">
-		  	<div class="music_style_margin">
+		  	<div class="music_style_margin" musicStyle="FM">
 		  		<div style="margin-left: 2.5px">
 		  			<img src="/images/app/station.svg" class="music_style_img">
 		  		</div>	
