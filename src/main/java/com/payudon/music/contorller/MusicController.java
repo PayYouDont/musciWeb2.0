@@ -23,6 +23,8 @@ import com.payudon.common.entity.Page;
 import com.payudon.music.entity.AllData;
 import com.payudon.music.entity.AllData.Content;
 import com.payudon.music.entity.AllData.V_hot;
+import com.payudon.music.entity.FMData;
+import com.payudon.music.entity.FMData.RadioList;
 import com.payudon.music.entity.HotSongData;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.MusicStyleData;
@@ -155,7 +157,7 @@ public class MusicController extends BaseController{
 			AllData allData = service.getAllData();
 			ArrayList<V_hot> v_hot = allData.getRecomPlaylist().getData().getV_hot();
 			model.addAttribute("songData",v_hot);
-			return new ModelAndView("music/recomTab");
+			return new ModelAndView("music/FMTab");
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return new ModelAndView("music/error");
@@ -169,6 +171,18 @@ public class MusicController extends BaseController{
 			List<Songlist> songlist = ParseUtil.parseSonglist(radioData);
 			model.addAttribute("songlist",songlist);
 			return new ModelAndView("music/table");
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return new ModelAndView("music/error");
+		}
+	}
+	@GetMapping("FMList")
+	public ModelAndView FMList(Model model) {
+		try {
+			FMData data = service.getFMData();
+			ArrayList<RadioList> radioList = data.getData().getData().getGroupList().get(0).getRadioList();
+			model.addAttribute("songData",radioList);
+			return new ModelAndView("music/FMTab");
 		} catch (Exception e) {
 			logger.error(e.getMessage(),e);
 			return new ModelAndView("music/error");
