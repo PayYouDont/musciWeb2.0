@@ -249,6 +249,10 @@ app.play = function(){
 	audio.addEventListener('play', audioPlay, false);
 	audio.addEventListener('pause', audioPause, false);
 	audio.addEventListener('ended', audioEnded, false);
+	audio.addEventListener('error', function(e){
+		console.log(e)
+		layer.msg("付费歌曲,无法播放！")
+	},true);
 }
 //播放
 function audioPlay(ev) {
