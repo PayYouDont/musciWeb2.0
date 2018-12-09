@@ -37,7 +37,7 @@ public class UrlUtil {
 	}
 	public static String getSearchList(String urlStr) throws Exception {
 		StringBuffer sb = connection(urlStr, null);
-		return sb.substring(sb.indexOf("(")+1,sb.indexOf(")"));
+		return sb.substring(sb.indexOf("(")+1,sb.lastIndexOf(")"));
 	}
 	public static StringBuffer getVkey(String urlStr) throws Exception {
 		String referer = "https://y.qq.com/portal/player.html";

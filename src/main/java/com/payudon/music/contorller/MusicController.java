@@ -238,6 +238,7 @@ public class MusicController extends BaseController{
 	public ModelAndView player(Model model,String songid,String isplay) {
 		try {	
 			String lyr = service.getlyr(songid).toString();
+			System.out.println(lyr);
 			model.addAttribute("lyr", lyr);
 		} catch (Exception e) {
 			logger.error("获取歌词error",e);

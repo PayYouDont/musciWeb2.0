@@ -250,8 +250,7 @@ app.play = function(){
 	audio.addEventListener('pause', audioPause, false);
 	audio.addEventListener('ended', audioEnded, false);
 	audio.addEventListener('error', function(e){
-		console.log(e)
-		layer.msg("付费歌曲,无法播放！")
+		layer.msg("付费歌曲,无法播放！");
 	},true);
 }
 //播放
