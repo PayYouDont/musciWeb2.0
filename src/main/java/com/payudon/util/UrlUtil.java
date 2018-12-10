@@ -76,17 +76,10 @@ public class UrlUtil {
 		in.close();
 		return sb;
 	}
-	/*public static String getAlbumData(String albumId) {
-		return "https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg?albummid="+albumId+"&g_tk=5381&jsonpCallback=albuminfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+	public static String getRaidoDataUrl(Integer radioid) {
+		return "https://u.y.qq.com/cgi-bin/musicu.fcg?callback=getradiosonglist6563171334422921&g_tk=5381&jsonpCallback=getradiosonglist6563171334422921&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data={\"songlist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiosonglist\",\"param\":{\"id\":"+radioid+",\"firstplay\":1,\"num\":10}},\"radiolist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiolist\",\"param\":{\"ct\":\"24\"}},\"comm\":{\"ct\":\"24\"}}";
 	}
 	public static void main(String[] args) throws Exception {
-		String albummid = "002FVfzB0jzfKi";
-		String urlStr = getAlbumData(albummid);
-		String text = getSongList(urlStr);
-		System.out.println(text);
-		JSONObject object = JSONObject.parseObject(text);
-		RecommendData bean = object.toJavaObject(RecommendData.class);
-		List<Songlist> list = ParseUtil.parseSonglist(bean);
-		System.out.println(list);
-	}*/
+		System.out.println(getRaidoDataUrl(1));
+	}
 }

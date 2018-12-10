@@ -11,7 +11,7 @@
 <body>
 	<div class="table">
 		<div class="songs muisc-style" th:each="song,songStat:${songData}">
-			<div class="music-style-main" th:attr="dissid=${song.content_id}" onclick="toHotList(this)">
+			<div class="music-style-main" th:attr="dissid=${song.content_id}" onclick="divToHotList(this)">
 				<img th:src="${song.cover}">
 				<p th:text="${song.title}"></p>
 			</div>

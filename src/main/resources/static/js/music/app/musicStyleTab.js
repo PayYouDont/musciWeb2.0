@@ -2,7 +2,7 @@ $(function(){
 	var $divs = $(".music-style-main");
 	$divs.eq($divs.length-1).css("margin-bottom","50px");
 });
-function toHotList(div){
+function divToHotList(div){
 	var dissid = $(div).attr("dissid");
 	var url = "../music/hotList?disstid="+dissid;
 	$("#music_list_table").load(url);

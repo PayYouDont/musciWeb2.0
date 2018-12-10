@@ -4,14 +4,15 @@ package com.payudon.music.service;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.payudon.music.config.UrlConfig;
 import com.payudon.music.entity.AllData;
 import com.payudon.music.entity.FMData;
 import com.payudon.music.entity.HotSongData;
@@ -33,67 +34,19 @@ import com.payudon.util.UrlUtil;
 @Service
 public class MusicService {
 
-	public String getSearchListUrl(String search) {
-		return "https://c.y.qq.com/soso/fcgi-bin/client_search_cp?ct=24&qqmusic_ver=1298&new_json=1&remoteplace=txt.yqq.song&searchid=71064181038426066&t=0&aggr=1&cr=1&catZhida=1&lossless=0&flag_qc=0&p=1&n=20&w="
-				+ search
-				+ "&g_tk=5381&jsonpCallback=MusicJsonCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
-	}
-
-	public String getSongListUrl() {
-		Date date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-		String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(date);
-		return "https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg?" + "tpl=3&page=detail&date=" + dateStr
-				+ "&topid=27&type=top&" + "song_begin=0&song_num=30&g_tk=5381&jsonpCallback=MusicJsonCallbacktoplist&"
-				+ "loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&"
-				+ "notice=0&platform=yqq&needNewCode=0";
-	}
-
-	public String getAllListUrl() {
-		return "https://u.y.qq.com/cgi-bin/musicu.fcg?callback=recom1250129690723727&g_tk=5381&jsonpCallback=recom1250129690723727&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data={\"comm\":{\"ct\":24},\"category\":{\"method\":\"get_hot_category\",\"param\":{\"qq\":\"\"},\"module\":\"music.web_category_svr\"},\"recomPlaylist\":{\"method\":\"get_hot_recommend\",\"param\":{\"async\":1,\"cmd\":2},\"module\":\"playlist.HotRecommendServer\"},\"playlist\":{\"method\":\"get_playlist_by_category\",\"param\":{\"id\":8,\"curPage\":1,\"size\":40,\"order\":5,\"titleid\":8},\"module\":\"playlist.PlayListPlazaServer\"},\"new_song\":{\"module\":\"QQMusic.MusichallServer\",\"method\":\"GetNewSong\",\"param\":{\"type\":0}},\"new_album\":{\"module\":\"music.web_album_library\",\"method\":\"get_album_by_tags\",\"param\":{\"area\":1,\"company\":-1,\"genre\":-1,\"type\":-1,\"year\":-1,\"sort\":2,\"get_tags\":1,\"sin\":0,\"num\":40,\"click_albumid\":0}},\"toplist\":{\"module\":\"music.web_toplist_svr\",\"method\":\"get_toplist_index\",\"param\":{}},\"focus\":{\"module\":\"QQMusic.MusichallServer\",\"method\":\"GetFocus\",\"param\":{}}}";
-	}
-
-	public String getLyrUrl(String songid) {
-		return "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg?nobase64=1&musicid=" + songid
-				+ "&callback=jsonp1&g_tk=5381&jsonpCallback=jsonp1&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
-	}
-
-	public String getHotListUrl(String disstid) {
-		return "https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&disstid="+disstid+"&format=jsonp&g_tk=5381&jsonpCallback=playlistinfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
-	}
+	@Resource
+	private UrlConfig urlConfig;
 	
-	public String getPopularDataUrl() {
-		return  "https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd="+Math.random()+"&g_tk=5381&jsonpCallback=getPlaylist&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=10000000&sortId=5&sin=0&ein=29";
-	}
-	
-	public String getClassicalDataUrl() {
-		return 	"https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd="+Math.random()+"&g_tk=5381&jsonpCallback=getPlaylist&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=27&sortId=5&sin=0&ein=29";
-
-	}
-	public String getPureDataUrl() {
-		return 	"https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg?picmid=1&rnd="+Math.random()+"&g_tk=5381&jsonpCallback=getPlaylist&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&categoryId=15&sortId=5&sin=0&ein=29";
-
-	}
-	
-	public String getFMDataUrl() {
-		return "https://c.y.qq.com/v8/fcg-bin/fcg_v8_radiolist.fcg?channel=radio&format=jsonp&page=index&tpl=wk&new=1&p="+Math.random()+"&g_tk=5381&jsonpCallback=MusicJsonCallback5806770807680648&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
-	}
-	
-	public String getRaidoDataUrl(Integer radioid) {
-		return "https://u.y.qq.com/cgi-bin/musicu.fcg?callback=getradiosonglist6563171334422921&g_tk=5381&jsonpCallback=getradiosonglist6563171334422921&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data={\"songlist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiosonglist\",\"param\":{\"id\":"+radioid+",\"firstplay\":1,\"num\":10}},\"radiolist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiolist\",\"param\":{\"ct\":\"24\"}},\"comm\":{\"ct\":\"24\"}}";
-	}
-	
-	public String getAlbumData(String albumId) {
-		return "https://c.y.qq.com/v8/fcg-bin/fcg_v8_album_info_cp.fcg?albummid="+albumId+"&g_tk=5381&jsonpCallback=albuminfoCallback&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
-	}
 	public MusicData getMusicData() {
-		String text = UrlUtil.getSongList(getSongListUrl());
+		String text = UrlUtil.getSongList(urlConfig.getSongDataUrl());
 		JSONObject object = JSONObject.parseObject(text);
 		MusicData bean = object.toJavaObject(MusicData.class);
 		return bean;
 	}
 
 	public SearchData getSearchData(String search) throws Exception {
-		String urlStr = getSearchListUrl(search);
+		String urlStr = urlConfig.getSearchDataUrl();
+		urlStr = urlStr.replace("{searchData}", search);
 		String json = UrlUtil.getSearchList(urlStr);
 		JSONObject object = JSONObject.parseObject(json);
 		SearchData list = object.toJavaObject(SearchData.class);
@@ -101,14 +54,15 @@ public class MusicService {
 	}
 
 	public AllData getAllData() {
-		String text = UrlUtil.getSongList(getAllListUrl());
+		String text = UrlUtil.getSongList(urlConfig.getAllData());
 		JSONObject object = JSONObject.parseObject(text);
 		AllData bean = object.toJavaObject(AllData.class);
 		return bean;
 	}
 	
 	public HotSongData getHotSongData(String disstid) throws Exception{
-		String urlStr = getHotListUrl(disstid);
+		String urlStr = urlConfig.getHotDataUrl();
+		urlStr = urlStr.replace("{disstid}", disstid);
 		String text = UrlUtil.getHotList(urlStr,disstid).toString();
 		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
 		JSONObject object = JSONObject.parseObject(text);
@@ -125,33 +79,31 @@ public class MusicService {
 	}
 	
 	public MusicStyleData getPopularData() throws Exception{
-		return getMusicStyleData(getPopularDataUrl());
+		return getMusicStyleData(urlConfig.getPopularDataUrl());
 	}
 	
 	public MusicStyleData getClassicalData() throws Exception{
-		return getMusicStyleData(getClassicalDataUrl());
+		return getMusicStyleData(urlConfig.getClassicalDataUrl());
 	}
 	
 	public MusicStyleData getPureData() throws Exception{
-		return getMusicStyleData(getPureDataUrl());
+		return getMusicStyleData(urlConfig.getPureDataUrl());
 	}
 	
 	public FMData getFMData() throws Exception{
-		String text = UrlUtil.getSearchList(getFMDataUrl());
+		String text = UrlUtil.getSearchList(urlConfig.getFMDataUrl());
 		JSONObject object = JSONObject.parseObject(text);
 		FMData bean = object.toJavaObject(FMData.class);
 		return bean;
 	}
 	public RadioData getRadioData(Integer radioid) throws Exception{
-		String urlStr = getRaidoDataUrl(radioid);
-		String text = UrlUtil.getSongList(urlStr);
+		String text = UrlUtil.getSongList(urlConfig.getRaidoDataUrl(radioid));
 		JSONObject object = JSONObject.parseObject(text);
 		RadioData bean = object.toJavaObject(RadioData.class);
 		return bean;
 	}
-	public RecommendData getRecommendData(String albummid) throws Exception{
-		String urlStr = getAlbumData(albummid);
-		String text = UrlUtil.getSongList(urlStr);
+	public RecommendData getRecommendData(String albummId) throws Exception{
+		String text = UrlUtil.getSongList(urlConfig.getAlbumDataUrl(albummId));
 		JSONObject object = JSONObject.parseObject(text);
 		RecommendData bean = object.toJavaObject(RecommendData.class);
 		return bean;
@@ -180,7 +132,6 @@ public class MusicService {
 	}
 
 	public StringBuffer getlyr(String songid) throws Exception {
-		String urlStr = getLyrUrl(songid);
-		return UrlUtil.getlyr(urlStr);
+		return UrlUtil.getlyr(urlConfig.getLyrDataUrl(songid));
 	}
 }
