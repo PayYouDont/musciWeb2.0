@@ -3,12 +3,6 @@ app.songTime = 0;
 //歌曲当前时间
 app.currentTime = 0;
 var a = $(function(){
-	/*var data = lyr.substring(7,lyr.length-1);
-	var data = JSON.parse(data);
-	var lrc = data.lyric;
-	var ly = lrc.replace(/&#(\d+);/g, (str, match) => String.fromCharCode(match));
-	console.log(data)
-	console.log(ly)*/
 	app.playerStatus = "superPlayer";
 	changeBG();
 	app.initPlayerParm();
@@ -92,11 +86,28 @@ function changeBG(){
 function updateProgress(ev){
 	var songTime = Math.floor(audio.duration);
 	app.songTime = songTime;
-	var currentTime = Math.floor(audio.currentTime);
-	app.currentTime = currentTime;
+	var currentTime = Math.floor(audio.currentTime*100)/100;
+	app.currentTime = Math.floor(currentTime);
 	$("#songTime span").text(formatTime(songTime));
-	$("#currentTime span").text(formatTime(currentTime));
+	$("#currentTime span").text(formatTime(Math.floor(currentTime)));
 	app.tiomePointRun();
+	updateLyr(currentTime);
+}
+function updateLyr(currentTime){
+	var lyrs = $(".lyr-p");
+	for (var i = 0; i < lyrs.length; i++) {
+		var lyr = lyrs[i];
+		var startTime = $(lyr).attr("startTime");
+		var second = conSeconds(startTime);
+		if(second <currentTime+0.2&&second>currentTime-0.2){
+			var divTop = $("#lyr-div").offset().top;
+			var pTop = $(lyr).offset().top
+			var top =  divTop - pTop + 80;
+			$("#lyr-div").css("top",top+"px")
+			$(".lyr-p").css("color","#fbfaf8");
+			$(lyrs[i]).css("color","#fe0041");
+		}
+	}
 }
 function toMiniPlayer(){
 	$("#player_normal").show();
@@ -198,4 +209,12 @@ function formatTime(value){
 		hour = hour>10?hour:"0"+hour;
 		return hour+":"+minute+":"+second;
 	}
+}
+//把形如：01：25的时间转化成秒；
+function conSeconds(t){
+	var m = t.substring(0, t.indexOf(":"));
+	var s = t.substring(t.indexOf(":") + 1);
+	m = parseInt(m.replace(/0/, ""));
+	var totalt = parseInt(m) * 60 + Math.floor(s*100)/100;
+	return totalt;
 }

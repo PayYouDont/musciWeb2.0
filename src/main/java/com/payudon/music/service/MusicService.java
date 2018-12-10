@@ -16,6 +16,7 @@ import com.payudon.music.config.UrlConfig;
 import com.payudon.music.entity.AllData;
 import com.payudon.music.entity.FMData;
 import com.payudon.music.entity.HotSongData;
+import com.payudon.music.entity.LyrData;
 import com.payudon.music.entity.MusicData;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.MusicStyleData;
@@ -131,7 +132,11 @@ public class MusicService {
 		return connection.getInputStream();
 	}
 
-	public StringBuffer getlyr(String songid) throws Exception {
-		return UrlUtil.getlyr(urlConfig.getLyrDataUrl(songid));
+	public LyrData getlyr(String songid) throws Exception {
+		String text = UrlUtil.getlyr(urlConfig.getLyrDataUrl(songid)).toString();
+		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		JSONObject object = JSONObject.parseObject(text);
+		LyrData bean = object.toJavaObject(LyrData.class);
+		return bean;
 	}
 }

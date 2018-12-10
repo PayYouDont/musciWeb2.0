@@ -26,6 +26,7 @@ import com.payudon.music.entity.AllData.V_hot;
 import com.payudon.music.entity.FMData;
 import com.payudon.music.entity.FMData.RadioList;
 import com.payudon.music.entity.HotSongData;
+import com.payudon.music.entity.LyrData;
 import com.payudon.music.entity.MusicData.Songlist;
 import com.payudon.music.entity.MusicStyleData;
 import com.payudon.music.entity.RadioData;
@@ -237,8 +238,9 @@ public class MusicController extends BaseController{
 	@GetMapping("player")
 	public ModelAndView player(Model model,String songid,String isplay) {
 		try {	
-			String lyr = service.getlyr(songid).toString();
-			model.addAttribute("lyr", lyr);
+			LyrData lyrData = service.getlyr(songid);
+			lyrData = ParseUtil.parseLyr(lyrData);
+			model.addAttribute("lyrData", lyrData);
 		} catch (Exception e) {
 			logger.error("获取歌词error",e);
 		}

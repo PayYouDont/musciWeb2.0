@@ -76,10 +76,17 @@ public class UrlUtil {
 		in.close();
 		return sb;
 	}
-	public static String getRaidoDataUrl(Integer radioid) {
+	/*public static String getRaidoDataUrl(Integer radioid) {
 		return "https://u.y.qq.com/cgi-bin/musicu.fcg?callback=getradiosonglist6563171334422921&g_tk=5381&jsonpCallback=getradiosonglist6563171334422921&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0&data={\"songlist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiosonglist\",\"param\":{\"id\":"+radioid+",\"firstplay\":1,\"num\":10}},\"radiolist\":{\"module\":\"pf.radiosvr\",\"method\":\"GetRadiolist\",\"param\":{\"ct\":\"24\"}},\"comm\":{\"ct\":\"24\"}}";
 	}
 	public static void main(String[] args) throws Exception {
-		System.out.println(getRaidoDataUrl(1));
-	}
+		String songid = "223484147";
+		String url = "https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric.fcg?nobase64=1&musicid="+songid+"&callback=jsonp1&g_tk=5381&jsonpCallback=jsonp1&loginUin=0&hostUin=0&format=jsonp&inCharset=utf8&outCharset=utf-8&notice=0&platform=yqq&needNewCode=0";
+		String text = getlyr(url).toString();
+		text = text.substring(text.indexOf("(")+1,text.lastIndexOf(")"));
+		JSONObject object = JSONObject.parseObject(text);
+		LyrData bean = object.toJavaObject(LyrData.class);
+		LyrData lyrData = ParseUtil.parseLyr(bean);
+		System.out.println(lyrData);
+	}*/
 }

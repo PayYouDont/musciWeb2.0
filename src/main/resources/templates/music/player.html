@@ -8,9 +8,6 @@
 	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <link rel="stylesheet" type="text/css" href="/css/muisc/player.css">
-<script th:inline="javascript">
-	var lyr = [[${lyr}]];
-</script>
 <script type="text/javascript" src="/js/music/app/player.js"></script>
 <title>播放器页面</title>
 </head>
@@ -40,8 +37,11 @@
 				<h5 id="top_song_singer"></h5>
 			</div>
 			<div class="center">
-				<!-- <p th:text="${lyr}">电视一直闪</p> -->
-				<p th:text="${lyr}">电视一直闪</p>
+				<div id="lyr-div">
+					<p class="lyr-p" th:each="lyrVO,lyrStat:${lyrData.lyrs}" 
+				   		th:attr="startTime=${lyrVO.startTime}"
+				   		th:text="${lyrVO.lyr}"></p>
+				</div>
 			</div>
 		</div>
 		<div class="lyr_player">

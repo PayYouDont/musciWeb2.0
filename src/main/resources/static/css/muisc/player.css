@@ -135,6 +135,14 @@ body{
 #songTime{
 	right: 0;
 }
+#lyr-div{
+	position: relative;
+    top: 0;
+    height: 230px;
+}
+.center{
+	overflow: hidden;
+}
 .center p{
 	color: #fbfaf8;
 }
